@@ -1,1 +1,6 @@
+# This pattern ignores all, then reincludes directories and all files with extensions
+*
+!*.*
+!*/
 *.swp
+

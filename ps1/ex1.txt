@@ -1,0 +1,22 @@
+The hostname of this machine (which is running Linux natively) is "ericsilklx2". This was printed
+by running "hostname".
+
+The "-o" option allows clang to write the output to the desired file. For instance, appending
+"-o pretty_graphs" to the clang command will create an executable called "pretty_graphs" instead
+of the default "a.out".
+
+Bash prints "a.out: command not found" as "a.out" is not in the environment variables or $PATH. The
+"./" indicates bash should execute the program available in the current directory. Similarly,
+providing any relative or absolute path to specify a program not in the environment variables or
+$PATH would do the same; e.g. "/home/ericsilk/Documents/UW_Masters/amath583/ps1/a.out".
+
+After selecting clang as my default compiler through "sudo update-alternatives", running
+"c++ --version" prints:
+clang version 6.0.0-1ubuntu2 (tags/RELEASE_600/final)
+Target: x86_64-pc-linux-gnu
+Thread model: posix
+InstalledDir: /usr/bin
+
+The "-l" flag tells clang to link a library (in this case Python 2.7). Per the man page, the use of
+"-I<directory>" does the following: "Add the specified directory to the search path for include
+files."
