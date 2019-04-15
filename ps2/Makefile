@@ -22,10 +22,10 @@ all		: julia.exe test_norms.exe test_zeroize.exe test_dot.exe \
 		  assert0.exe assert1.exe assert2.exe assert3.exe
 
 julia.exe 	: julia.o amath583.o
-		  $(CXX) $(CXXFLAGS) julia.o -o julia.exe
+		  $(CXX) $(CXXFLAGS) -pthread julia.o -o julia.exe
 
 julia.o 	: julia.cpp amath583.hpp Vector.hpp
-	   	  $(CXX) $(CXXFLAGS) -c julia.cpp -o julia.o
+	   	  $(CXX) $(CXXFLAGS) -pthread -c julia.cpp -o julia.o
 
 test_norms.exe 	: test_norms.o amath583.o
 		  $(CXX) $(CXXFLAGS) test_norms.o amath583.o -o test_norms.exe
@@ -39,11 +39,11 @@ test_zeroize.exe 	: test_zeroize.o amath583.o
 test_zeroize.o 	: test_zeroize.cpp amath583.hpp Vector.hpp
 		  $(CXX) $(CXXFLAGS) -c test_zeroize.cpp -o test_zeroize.o
 
-test_dot.exe 	: # write me
-		  # write me
+test_dot.exe 	: test_dot.o amath583.o
+		  $(CXX) $(CXXFLAGS) -c test_dot.cpp -o test_dot.o
 
-test_dot.o 	: # write me
-		  # write me
+test_dot.o 	: test_dot.cpp amath583.hpp Vector.hpp
+		  $(CXX) $(CXXFLAGS) -c test_dot.cpp -o test_dot.o
 
 amath583.o 	: amath583.cpp amath583.hpp Vector.hpp
 		  $(CXX) $(CXXFLAGS) -c amath583.cpp -o amath583.o
@@ -58,7 +58,7 @@ assert2.exe	: assert2.cpp
 		  $(CXX) $(CXXFLAGS) assert2.cpp -o assert2.exe
 
 assert3.exe	: assert3.cpp
-		  $(CXX) $(CXXFLAGS) assert3.cpp -o assert3.exe
+		  $(CXX) $(CXXFLAGS) -DNDEBUG assert3.cpp -o assert3.exe
 
 clean		:
 		  /bin/rm -f julia.o amath583.o julia.exe *~ julia.bmp \

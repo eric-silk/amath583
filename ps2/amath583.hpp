@@ -19,5 +19,6 @@ double two_norm(const Vector& x);
 double inf_norm(const Vector& x);
 
 // AMATH 583 students will need to add dot() 
+Vector dot(const Vector& x, const Vector& y);
 
 #endif    // AMATH583_WHITE_BELT_AMATH583_HPP

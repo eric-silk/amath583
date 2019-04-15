@@ -22,9 +22,9 @@ std::complex<double> xy_to_complex(int x, int y) {
   return std::complex<double>((x - scale) / ((double)scale), (y - scale) / ((double)scale));
 }
 
-std::complex<double> f(std::complex<double> x) { return /* WRITE ME (not zero) */ 0.0; }
+std::complex<double> f(std::complex<double> x) { return std::pow(x, 3.0) - 1.0; }
 
-std::complex<double> fp(std::complex<double> x) { return /* WRITE ME (not one) */ 1.0; }
+std::complex<double> fp(std::complex<double> x) { return 3.0*std::pow(x, 2.0); }
 
 int newt(std::complex<double> x0) {
   for (int i = 0; i < 256; ++i) {

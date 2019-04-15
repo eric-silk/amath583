@@ -61,3 +61,19 @@ double inf_norm(const Vector& x)
 }
 
 // AMATH 583 students will need to add dot() 
+Vector dot(const Vector& x, const Vector& y)
+{
+    if (x.num_rows() != y.num_rows())
+    {
+        throw "Dot product of unequal length vectors is not defined!";
+    }
+
+    double result = 0.0;
+
+    for (size_t i=0; i < x.num_rows(); ++i)
+    {
+        result += x(i)*y(i);
+    }
+
+    return result;
+}
