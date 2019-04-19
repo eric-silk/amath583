@@ -10,20 +10,29 @@
 #include <iostream>
 #include "Timer.hpp"
 #include <cstdlib>
+#include <sstream>
+#include <string>
 
-int main(int argc, char* argv[]) {
-  size_t loops = argv[1]; // FIXME
+int main(int argc, char* argv[])
+{
+    std::stringstream ss;
+    ss << argv[1];
 
-  double a = 3.14, b = 3.14159, c = 0.0;
+    size_t loops = 0;
+    ss >> loops;
 
-  Timer T;
-  T.start();
-  for (size_t i = 0; i < loops; ++i) {
-    c += a * b;
-  }
-  T.stop();
+    double a = 3.14, b = 3.14159, c = 0.0;
 
-  std::cout << loops << " loops took " << T.elapsed() << " milliseconds" << std::endl;
+    Timer T;
+    T.start();
+    for (size_t i = 0; i < loops; ++i)
+    {
+        c += a * b;
+    }
+    T.stop();
 
-  return 0;
+    std::cout << "Final value of c: " << c << std::endl;
+    std::cout << loops << " loops took " << T.elapsed() << " milliseconds" << std::endl;
+
+    return 0;
 }

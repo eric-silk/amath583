@@ -10,17 +10,26 @@
 #include <iostream>
 #include "Timer.hpp"
 #include <cstdlib>
+#include <sstream>
+#include <string>
 
-int main(int argc, char* argv[]) {
-  size_t loops = argv[1]; // FIXME
+int main(int argc, char* argv[])
+{
+    std::stringstream ss;
+    ss << argv[1];
 
-  Timer T;
-  T.start();
-  for (size_t i = 0; i < loops; ++i)
-    ;
-  T.stop();
+    size_t loops = 0;
+    ss >> loops;
 
-  std::cout << loops << " loops took " << T.elapsed() << " milliseconds" << std::endl;
+    Timer T;
+    T.start();
+        for (size_t i = 0; i < loops; ++i)
+        {
+            // do nuffin
+        };
+    T.stop();
 
-  return 0;
+    std::cout << loops << " loops took " << T.elapsed() << " milliseconds" << std::endl;
+
+    return 0;
 }

@@ -8,12 +8,20 @@
 
 
 #include <iostream>
+#include <string>
 
-int main(int argc, char* argv[])  {
+int main(int argc, char* argv[])
+{
+    int size = 0;
+    if (argc != 2)
+    {
+        std::cerr << "Usage: " << argv[0] << " size" << std::endl;
+        return -1;
+    }
 
-  int size = argv[1];
+    size = std::stoi(argv[1]);
 
-  std::cout << "size is " << size << std::endl;
+    std::cout << "size is " << size << std::endl;
 
-  return  0;
+    return  0;
 }

@@ -11,7 +11,6 @@
 
 #include <chrono>
 
-
 class Timer {
 private:
   typedef std::chrono::time_point<std::chrono::system_clock> time_t;
