@@ -11,14 +11,36 @@ Add your answers to this file in plain text after each question.  Leave a blank 
 
 **Q1** What does `argv[0]` always contain?
 
+*If* argc is greater than 0, the string pointed to by argv[0] *represents* the program name.
+[Source](https://stackoverflow.com/a/2051031/8341166)
+
 
 **Q2** Which entry of `argv` holds the first argument passed to the program?
+
+Assuming:
+```bash
+./foo arg1 arg2
+```
+where arg1 is the "first argument", then:
+argv[1]
 
 
 **Q3** Which entry of `argv` holds the second argument passed to the program?
 
+Assuming:
+```bash
+./foo arg1 arg2
+```
+where arg2 is the "second argument", then:
+argv[2]
+
 
 **Q4** How would you print just the last argument passed to a program?
+
+```c++
+// within main, with all headers, etc. etc...
+std::cout << argv[argc-1] << std::endl;
+```
 
 
 #### float vs double
