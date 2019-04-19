@@ -2,6 +2,7 @@
 *
 !*.*
 !*/
+!*Makefile
 # Vim Swap files
 *.swp
 *.png
