@@ -11,16 +11,15 @@ Add your answers to this file in plain text after each question.  Leave a blank 
 
 **Q1** What does `argv[0]` always contain?
 
-*If* argc is greater than 0, the string pointed to by argv[0] *represents* the program name.
-[Source](https://stackoverflow.com/a/2051031/8341166)
+If argc is greater than 0, the string pointed to by argv[0] represents the program name.
+Source: https://stackoverflow.com/a/2051031/8341166
 
 
 **Q2** Which entry of `argv` holds the first argument passed to the program?
 
 Assuming:
-```bash
 ./foo arg1 arg2
-```
+
 where arg1 is the "first argument", then:
 argv[1]
 
@@ -28,42 +27,62 @@ argv[1]
 **Q3** Which entry of `argv` holds the second argument passed to the program?
 
 Assuming:
-```bash
 ./foo arg1 arg2
-```
+
 where arg2 is the "second argument", then:
 argv[2]
 
 
 **Q4** How would you print just the last argument passed to a program?
 
-```c++
 // within main, with all headers, etc. etc...
 std::cout << argv[argc-1] << std::endl;
-```
 
 
 #### float vs double
 
+(**NB:**  Q5 and Q6 compare float and double for -O0, Q7 and Q8 for -O3.)
+
 **Q5**  What is the difference (ratio) in execution times 
 between single and double precision for
-    construction with no optimization? Explain.
+    construction **without** optimization? Explain.
+
+My explanation for all results will be in Q9.
+On average (n=3), the doubles take 1.325 times as long to construct.
 
 **Q6**  What is the difference (ratio) in execution times
 between single and double precision for
-    multiplication with no optimization? Explain.
+    multiplication **without** optimization? Explain.
+
+On average, the double takes 1.02 times as long to multiply.
 
 **Q7**  What is the difference (ratio) in execution times 
 between single and double precision for
-    construction with no optimization? Explain.
+    construction **with** optimization? Explain.
+
+On average, the double takes 2.05 times as long to construct.
+
 
 **Q8**  What is the difference (ratio) in execution times 
 between single and double precision for 
-    multiplication with no optimization? Explain. 
+    multiplication **with** optimization? Explain. 
+
+On average, the double takes 2.02 times as long to multiply.
+
 
 **Q9**  What is the difference (ratio) in execution times 
 for double precision
     multiplication with and without optimization? Explain. 
+
+On average, the unoptimized double takes 3.74 times as long to multiply.
+
+When not optimizing, loops are not unrolled, small functions are not inlined, and I suspect that
+pipelining is not used, requiring the CPU to wait longer per instruction. Additionally, "true" FPU
+multiplication may not be occuring for doubles.
+
+When optimizing, the above operations ARE applied. As such, more instructions are stored in the
+cache (minimizing time required to fetch them), pipelining occurs (no waiting for each instruction
+to finish), and the proper use of an FPU for both floats AND doubles occurs.
 
 
 #### efficiency

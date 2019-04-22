@@ -9,40 +9,58 @@
 #include <iostream>
 #include <vector>
 #include "Timer.hpp"
-
-int main(int argc, char *argv[]) {
-  Timer t;    
-  size_t dim = argv[1]; // FIXME
-
-  t.start();
-  std::vector<double> dx(dim, 3.14);
-  std::vector<double> dy(dim, 27.0);
-  std::vector<double> dz(dim, 0.0);
-  t.stop();
-  std::cout << "Construction time for double: " << t.elapsed() << std::endl;
-
-  t.start();
-  for (size_t i = 0; i < dim; ++i) {
-    dz[i] = dx[i] * dy[i];
-  }
-  t.stop();
-  std::cout << "Multiplication time for double: " << t.elapsed() << std::endl;
+#include <cstdlib>
+#include <sstream>
 
 
-  t.start();
-  std::vector<double> fx(dim, 3.14);
-  std::vector<double> fy(dim, 27.0);
-  std::vector<double> fz(dim, 0.0);
-  t.stop();
-  std::cout << "Construction time for float: " << t.elapsed() << std::endl;
+int main(int argc, char *argv[])
+{
 
-  t.start();
-  for (size_t i = 0; i < dim; ++i) {
-    fz[i] = fx[i] * fy[i];
-  }
-  t.stop();
-  std::cout << "Multiplication time for float: " << t.elapsed() << std::endl;
+    if(argc != 2)
+    {
+        std::cerr << "Invalid parameters. Usage: './float_vs_double*.exe <Number of dimensions>'"
+            << std::endl;
+        return -1;
+    }
+
+    std::stringstream ss(argv[1]);
+    size_t dim = 0;
+    ss >> dim;
+    Timer t;    
+
+    t.start();
+    std::vector<double> dx(dim, 3.14);
+    std::vector<double> dy(dim, 27.0);
+    std::vector<double> dz(dim, 0.0);
+    t.stop();
+    std::cout << "Construction time for double: " << t.elapsed() << std::endl;
+
+    t.start();
+    for (size_t i = 0; i < dim; ++i)
+    {
+        dz[i] = dx[i] * dy[i];
+    }
+
+    t.stop();
+    std::cout << "Multiplication time for double: " << t.elapsed() << std::endl;
 
 
-  return 0;
+    t.start();
+    std::vector<float> fx(dim, 3.14);
+    std::vector<float> fy(dim, 27.0);
+    std::vector<float> fz(dim, 0.0);
+    t.stop();
+    std::cout << "Construction time for float: " << t.elapsed() << std::endl;
+
+    t.start();
+    for (size_t i = 0; i < dim; ++i)
+    {
+        fz[i] = fx[i] * fy[i];
+    }
+
+    t.stop();
+    std::cout << "Multiplication time for float: " << t.elapsed() << std::endl;
+
+
+    return 0;
 }

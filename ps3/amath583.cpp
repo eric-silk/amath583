@@ -40,6 +40,12 @@ double two_norm(const Vector& x) {
 double inf_norm(const Vector& x);
 double p_norm(const Vector& x);
 
+
+Vector operator*(double alpha, const Vector& x) {
+  /* WRITE ME */
+}
+
+
 Vector operator+(const Vector& x, const Vector& y) {
   Vector z(x.num_rows());
   for (size_t i = 0; i < z.num_rows(); ++i) {
@@ -54,7 +60,8 @@ Vector& operator*=(double alpha, const Vector& x) {
   /* 583 WRITE ME */
 }
 
-Vector& operator+=(const Vector& x, const Vector& y) {
+
+Vector& operator+=(Vector& x, const Vector& y) {
   /* WRITE ME */
 }
 

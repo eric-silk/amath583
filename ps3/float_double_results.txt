@@ -1,0 +1,78 @@
+/bin/rm -f amath583.o \
+	  hello.exe goodbye.exe repeat.exe main.exe \
+	  timing0.exe timing3.exe efficiency0.exe efficiency3.exe \
+	  float_vs_double0.exe float_vs_double3.exe \
+	  plus_equals.o plus_equals.exe star_times.o star_times.exe
+/bin/rm -rf *.exe.dSYM
+c++ -std=c++11 -Wall -O0 float_vs_double.cpp -o float_vs_double0.exe
+c++ -std=c++11 -Wall -O3 float_vs_double.cpp -o float_vs_double3.exe
+--------------------------------------------------
+ 100000000
+--------------------------------------------------
+Construction time for double: 1008
+Multiplication time for double: 665
+Construction time for float: 762
+Multiplication time for float: 652
+--------------------------------------------------
+Construction time for double: 1013
+Multiplication time for double: 659
+Construction time for float: 755
+Multiplication time for float: 646
+--------------------------------------------------
+Construction time for double: 1001
+Multiplication time for double: 657
+Construction time for float: 757
+Multiplication time for float: 645
+--------------------------------------------------
+ 50000000
+--------------------------------------------------
+Construction time for double: 516
+Multiplication time for double: 331
+Construction time for float: 387
+Multiplication time for float: 323
+--------------------------------------------------
+Construction time for double: 505
+Multiplication time for double: 329
+Construction time for float: 383
+Multiplication time for float: 323
+--------------------------------------------------
+Construction time for double: 502
+Multiplication time for double: 330
+Construction time for float: 377
+Multiplication time for float: 325
+--------------------------------------------------
+--------------------------------------------------
+ 10000000
+--------------------------------------------------
+Construction time for double: 105
+Multiplication time for double: 65
+Construction time for float: 79
+Multiplication time for float: 65
+--------------------------------------------------
+Construction time for double: 102
+Multiplication time for double: 65
+Construction time for float: 74
+Multiplication time for float: 65
+--------------------------------------------------
+Construction time for double: 105
+Multiplication time for double: 65
+Construction time for float: 77
+Multiplication time for float: 64
+--------------------------------------------------
+ 100000000
+--------------------------------------------------
+Construction time for double: 1030
+Multiplication time for double: 658
+Construction time for float: 764
+Multiplication time for float: 645
+--------------------------------------------------
+Construction time for double: 1008
+Multiplication time for double: 659
+Construction time for float: 754
+Multiplication time for float: 645
+--------------------------------------------------
+Construction time for double: 1012
+Multiplication time for double: 660
+Construction time for float: 754
+Multiplication time for float: 645
+--------------------------------------------------
