@@ -20,49 +20,74 @@
 // Vector arithmetic
 //
 // ----------------------------------------------------------------
-void zeroize(Vector& x) {
-  for (size_t i = 0; i < x.num_rows(); ++i) {
-    x(i) = 0.0;
-  }
+void zeroize(Vector& x)
+{
+    for (size_t i = 0; i < x.num_rows(); ++i)
+    {
+        x(i) = 0.0;
+    }
 }
 
 void   randomize(Vector& x);
 double one_norm(const Vector& x);
 
 double two_norm(const Vector& x) {
-  double sum = 0.0;
-  for (size_t i = 0; i < x.num_rows(); ++i) {
-    sum += x(i) * x(i);
-  }
-  return std::sqrt(sum);
+    double sum = 0.0;
+    for (size_t i = 0; i < x.num_rows(); ++i)
+    {
+        sum += x(i) * x(i);
+    }
+    return std::sqrt(sum);
 }
 
 double inf_norm(const Vector& x);
 double p_norm(const Vector& x);
 
 
-Vector operator*(double alpha, const Vector& x) {
-  /* WRITE ME */
+Vector operator*(double alpha, const Vector& x)
+{
+    Vector y(x.num_rows());
+    for (size_t i = 0; i < x.num_rows(); i++)
+    {
+        y(i) = x(i) * alpha;
+    }
+
+    return y;
 }
 
 
-Vector operator+(const Vector& x, const Vector& y) {
-  Vector z(x.num_rows());
-  for (size_t i = 0; i < z.num_rows(); ++i) {
-    z(i) = x(i) + y(i);
-  }
-  return z;
+Vector operator+(const Vector& x, const Vector& y)
+{
+    Vector z(x.num_rows());
+    for (size_t i = 0; i < z.num_rows(); ++i)
+    {
+        z(i) = x(i) + y(i);
+    }
+    return z;
 }
 
 Vector operator-(const Vector& x, const Vector& y);
 
-Vector& operator*=(double alpha, const Vector& x) {
-  /* 583 WRITE ME */
+Vector& operator*=(double alpha, const Vector& x)
+{
+    /* 583 WRITE ME */
 }
 
 
-Vector& operator+=(Vector& x, const Vector& y) {
-  /* WRITE ME */
+Vector& operator+=(Vector& x, const Vector& y)
+{
+    if (x.num_rows() != y.num_rows())
+    {
+        throw "Vectors must be of same size!";
+    }
+
+    for(size_t i=0; i < x.num_rows(); i++)
+    {
+        x(i) += y(i);
+    }
+
+    return x;
+
 }
 
 Vector& operator-=(const Vector& x, const Vector& y);

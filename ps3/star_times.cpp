@@ -12,39 +12,45 @@
 #include "amath583.hpp"
 #include <cstdlib>
 
-int main(int argc, char* argv[]) {
-  size_t size = argv[1]; // FIXME
-  size_t trips = argv[2]; // FIXME
+int main(int argc, char* argv[])
+{
+    size_t size = std::atoi(argv[1]); // FIXME
+    size_t trips = std::atoi(argv[2]); // FIXME
 
-  double alpha = 867.5309;
-  Vector x(size), y(size);
+    double alpha = 867.5309;
+    Vector x(size), y(size);
 
-  Timer T;
-  T.start();
-  for (size_t j = 0; j < trips; ++j) {
-    for (size_t i = 0; i < size; ++i) {
-      /* Hand written -- WRITE ME */
+    Timer T;
+    T.start();
+    for (size_t j = 0; j < trips; ++j)
+    {
+        for (size_t i = 0; i < size; ++i)
+        {
+            /* Hand written -- WRITE ME */
+            y(i) = y(i) + (alpha * x(i));
+        }
     }
-  }
-  T.stop();
+    T.stop();
 
-  std::cout << "Hand written: " << T.elapsed()/((double) trips) << std::endl;
+    std::cout << "Hand written: " << T.elapsed()/((double) trips) << std::endl;
 
-  t.start();
-  for (size_t j = 0; j < trips; ++j) {
-    y = y + alpha * x;
-  }
-  t.stop();
-  
-  std::cout << "y = y + alpha * x: " << T.elapsed()/((double) trips) << std::endl;
-  
-  t.start();
-  for (size_t j = 0; j < trips; ++j) {
-    y += alpha * x;
-  }
-  t.stop();
+    T.start();
+    for (size_t j = 0; j < trips; ++j)
+    {
+        y = y + alpha * x;
+    }
+    T.stop();
 
-  std::cout << "y += alpha * x: " << T.elapsed()/((double) trips) << std::endl;
+    std::cout << "y = y + alpha * x: " << T.elapsed()/((double) trips) << std::endl;
 
-  return 0;
+    T.start();
+    for (size_t j = 0; j < trips; ++j)
+    {
+        y += alpha * x;
+    }
+    T.stop();
+
+    std::cout << "y += alpha * x: " << T.elapsed()/((double) trips) << std::endl;
+
+    return 0;
 }

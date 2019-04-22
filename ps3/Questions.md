@@ -36,6 +36,7 @@ argv[2]
 **Q4** How would you print just the last argument passed to a program?
 
 // within main, with all headers, etc. etc...
+
 std::cout << argv[argc-1] << std::endl;
 
 
@@ -90,12 +91,21 @@ to finish), and the proper use of an FPU for both floats AND doubles occurs.
 **Q10** What changes did you make to the 
     code, if any?
 
+I added a printout of the final value of "c".
+
 **Q11** Why did you make those changes?
+
+Without a use for the value "c", the compiler identifies the loop as "dead code" and removes it.
+This is counter to the intended purpose.
 
 **Q12** What is the clock rate of your computer?
 
+3.50GHz.
+
 **Q13** What is the max achieved single and double precision floating point rate of your timed code (with and
     without optimization)?  What is the efficiency?
+
+TODO
 
 
 #### operator*
