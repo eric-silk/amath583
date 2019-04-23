@@ -71,6 +71,7 @@ Vector operator-(const Vector& x, const Vector& y);
 Vector& operator*=(double alpha, const Vector& x)
 {
     /* 583 WRITE ME */
+    // Not required for now, per Dr. Lumsdaine
     throw "Not implemented yet, dummy!";
 }
 
