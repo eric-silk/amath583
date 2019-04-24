@@ -105,13 +105,28 @@ This is counter to the intended purpose.
 **Q13** What is the max achieved single and double precision floating point rate of your timed code (with and
     without optimization)?  What is the efficiency?
 
-TODO
+I think you're looking for efficiency as a measure of actual FLOPS per cycle compared to the
+theoretical maximum if each cycle was one FLOP?
 
+Assumptions: Adds and multiplies are one flop operation each and take 1 CPU cycle,
+the CPU frequency isn't changing dynamically (i.e. none of this TurboBoost stuff),
+the CPU doesn't support MAC (Multiply Accumulate) operations (i.e. the multiplication and
+accumulation each take one FLOP). 
+
+The tests were ran for 1 billion loops.
+Then:
+
+Efficiency = (FLOPS/time elapsed) / (Cycles/second)
+
+Efficiency, non-optimized = ((2x10^9)/(2.319)/(3.5x10^9) ~= 0.264, or ~26% efficiency
+Efficiency, optimized = ((2x10^9)/(0.773)/(3.5x10^9) ~= 0.73923, or ~74% efficiency
 
 #### operator*
 
 **Q14** Does the `operator*` performance match the hand-written variant? If not, 
 explain. 
+No. The hand-written version, for arguments of 1000 1000, on my machine takes 0.017 seconds; the
+`operator*` version takes 0.028.
 
 
 **Extra credit:**  Can you think of a way to circumvent the problem

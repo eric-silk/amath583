@@ -14,8 +14,13 @@
 
 int main(int argc, char* argv[])
 {
-    size_t size = std::atoi(argv[1]); // FIXME
-    size_t trips = std::atoi(argv[2]); // FIXME
+    if (argc != 3)
+    {
+        std::cerr << "Invalid usage. ./star_times vector_size trips" << std::endl;
+        return -1;
+    }
+    size_t size = std::atoi(argv[1]);
+    size_t trips = std::atoi(argv[2]);
 
     double alpha = 867.5309;
     Vector x(size), y(size);
