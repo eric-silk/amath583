@@ -125,12 +125,19 @@ Efficiency, optimized = ((2x10^9)/(0.773)/(3.5x10^9) ~= 0.73923, or ~74% efficie
 
 **Q14** Does the `operator*` performance match the hand-written variant? If not, 
 explain. 
-No. The hand-written version, for arguments of 1000 1000, on my machine takes 0.017 seconds; the
-`operator*` version takes 0.028.
+
+No. The hand-written version, for arguments of 1000 1000, on my machine reports 0.017; the
+`operator*` version reports 0.028. Enabling optimization in the Makefile seemed to bring them
+within spitting distance of each other? I'm guessing that the issue is the overhead associated
+with each operator call is causing the difference in performance, and when enabling the optimizations
+the function call is inlined, removing the repeated overhead. That, and/or there's some loop
+unrolling that occurs.
 
 
 **Extra credit:**  Can you think of a way to circumvent the problem
 (if there was a problem)?
+
+Enable optimizations or provide the "inline" keyword?
 
 
 #### About PS3
@@ -138,5 +145,11 @@ No. The hand-written version, for arguments of 1000 1000, on my machine takes 0.
 
 **Q15** The most important thing I learned from this assignment was ...
 
+Compiler optimization flags are great. **BUT**, they'll only get you so far.
 
 **Q16** One thing I am still not clear on is ...
+
+How, when there are **so many** different flags, are we supposed to realistically identify which are
+responsible for any performance increases? And, if so, why aren't they always turned on? I know there
+are limits to this, and sometimes higher optimization levels can actually detriment performance, but
+if this is an exception to the rule...why not default to high optimization and optionally lower it?
