@@ -81,9 +81,13 @@ When not optimizing, loops are not unrolled, small functions are not inlined, an
 pipelining is not used, requiring the CPU to wait longer per instruction. Additionally, "true" FPU
 multiplication may not be occuring for doubles.
 
-When optimizing, the above operations ARE applied. As such, more instructions are stored in the
+When optimizing, the above operations ARE applied. As such, more instructions/data are stored in the
 cache (minimizing time required to fetch them), pipelining occurs (no waiting for each instruction
 to finish), and the proper use of an FPU for both floats AND doubles occurs.
+
+The caching is the most significant factor here -- cache misses require the CPU to fetch data from
+higher layers of cache (L2 or L3) instead of L1, OR require a fetch from RAM. Each of these are
+further removed physically, meaning locality is diminished, and so is performance.
 
 
 #### efficiency
