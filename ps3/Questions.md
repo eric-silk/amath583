@@ -113,12 +113,12 @@ the CPU frequency isn't changing dynamically (i.e. none of this TurboBoost stuff
 the CPU doesn't support MAC (Multiply Accumulate) operations (i.e. the multiplication and
 accumulation each take one FLOP). 
 
-The tests were ran for 1 billion loops.
-Then:
+The tests were ran for 1 billion loops.  Then:
 
 Efficiency = (FLOPS/time elapsed) / (Cycles/second)
 
 Efficiency, non-optimized = ((2x10^9)/(2.319)/(3.5x10^9) ~= 0.264, or ~26% efficiency
+
 Efficiency, optimized = ((2x10^9)/(0.773)/(3.5x10^9) ~= 0.73923, or ~74% efficiency
 
 #### operator*
