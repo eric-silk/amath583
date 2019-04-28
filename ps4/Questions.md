@@ -6,6 +6,16 @@ title: PS4 Questions
 
 Add your answers to this file in plain text after each question.  Leave a blank line between the text of the question and the text of your answer.
 
+### Questions from PS4 Webpage
+
+**Q**
+What level of SIMD/vector support does the CPU on your computer provide?
+
+**Q**
+What is the maximum operand size your computer will support?
+
+256-bit operands on my Ubuntu on Windows machine. Will update if I check on my other machine.
+
 
 #### Ordering matters
 
