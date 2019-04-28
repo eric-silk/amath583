@@ -1,6 +1,7 @@
 
 
 #include <random>
+#include <functional>
 #include "RowMatrix.hpp"
 #include "ColMatrix.hpp"
 

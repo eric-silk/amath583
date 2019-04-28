@@ -91,10 +91,17 @@ double two_norm(const Matrix& A);
 double inf_norm(const Matrix& A);
 
 
-double Frobenius_norm(const Matrix& A) {
-  double result = 0.0;
-  /* WRITE ME */
-  return result;
+double Frobenius_norm(const Matrix& A)
+{
+    double result = 0.0;
+    for(size_t row = 0; row < A.num_rows(); row++)
+    {
+        for (size_t col = 0; col < A.num_cols(); col++)
+        {
+            result += std::pow(std::abs(A(row, col)), 2);
+        }
+    }
+    return result;
 }
 
 Matrix operator+(const Matrix& A, const Matrix& B) {
@@ -111,9 +118,20 @@ Matrix operator+(const Matrix& A, const Matrix& B) {
 }
 
 
-Matrix operator-(const Matrix& D, const Matrix& E) {
-  /* WRITE ME */
-  return Matrix(0, 0); // FIX ME;
+Matrix operator-(const Matrix& D, const Matrix& E)
+{
+    assert(D.num_rows() == E.num_rows());
+    assert(D.num_cols() == E.num_cols());
+    Matrix A(D.num_rows(), D.num_cols());
+    for(size_t row = 0; row < D.num_rows(); row++)
+    {
+        for (size_t col = 0; col < D.num_cols(); col++)
+        {
+            A(row, col) = D(row, col) - E(row, col);
+        }
+    }
+
+    return A;
 }
 
 Matrix& operator*=(double alpha, const Matrix& x);
