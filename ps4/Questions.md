@@ -4,31 +4,25 @@ title: PS4 Questions
 
 ### PS4 Written Questions
 
-Add your answers to this file in plain text after each question.  Leave a blank line between the text of the question and the text of your answer.
-
-### Questions from PS4 Webpage
-
-**Q**
-What level of SIMD/vector support does the CPU on your computer provide?
-
-**Q**
-What is the maximum operand size your computer will support?
-
-256-bit operands on my Ubuntu on Windows machine. Will update if I check on my other machine.
-
+Add your answers to this file in plain text after each question.  Leave a blank line between the
+text of the question and the text of your answer.
 
 #### Ordering matters
 
 
 **Q**
-There should be some differences between the results for the three functions for multiplying matrices (ijk, ikj, jki).  Using what you know about memory hierarchy, CPU operation, and data layout for row-major matrices, explain the behavior you are seeing.  (Hint: The three functions differ in the variable they iterate over in their inner loops.)
+There should be some differences between the results for the three functions for multiplying
+matrices (ijk, ikj, jki).  Using what you know about memory hierarchy, CPU operation, and data
+layout for row-major matrices, explain the behavior you are seeing.  (Hint: The three functions
+differ in the variable they iterate over in their inner loops.)
 
 
 
 ### Orientation
 
 **Q**
-For each of the ijk, ikj, and jki orderings for a row-oriented matrix-matrix product, what are the equivalent orderings for a column-oriented matrix-matrix product?
+For each of the ijk, ikj, and jki orderings for a row-oriented matrix-matrix product, what are the
+equivalent orderings for a column-oriented matrix-matrix product?
 
 
 
