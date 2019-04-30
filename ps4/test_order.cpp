@@ -57,6 +57,11 @@ TEST_CASE("Matrix loop order", "[Order]") {
   size_t N = 256;
   Matrix A(N, N), B(N, N), C(N, N), D(N, N);
 
+  randomize(A);
+  randomize(B);
+  randomize(C);
+  randomize(D);
+
 
   SECTION("test ijk (kind of)") {  
     Matrix E = A * B;
