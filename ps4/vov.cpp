@@ -9,6 +9,7 @@
 //
 
 #include <cmath>
+#include <functional>
 #include <iostream>
 #include "VoVMatrix.hpp"
 #include "Timer.hpp"
@@ -76,6 +77,7 @@ int main(int argc, char* argv[]) {
     t.start();
     for (size_t trip = 0; trip <= trips; ++trip) {
       /* call mat mat here */
+      matmat(A, B, C);
     }
     t.stop();
     double f = (2.0 * size * size * size) / 1.E9;
@@ -88,6 +90,62 @@ int main(int argc, char* argv[]) {
     std::cout << size << "\t" << trips << "\t" << e << "\t" << e/trips << "\t" << f/e << std::endl;
   }
   plt::named_loglog("V of Vs", sizes, flops);
+
+
+  std::cout << "================================================================" << std::endl;
+  std::cout << "  Vector of Vectors, ikj " << std::endl;
+  std::cout << "N\ttrips\ttotal\tavg\tGflops" << std::endl;
+  sizes.clear();
+  flops.clear();
+  for (size_t size = 16; size <= maxsize; size *= 2) {
+    size_t trips = 2 +  1024 * 1024 * 1024 / (size * size * size);
+    VoVMatrix A(size, size), B(size, size), C(size, size);
+    randomize(A); randomize(B); randomize(C);
+
+    t.start();
+    for (size_t trip = 0; trip <= trips; ++trip) {
+      /* call mat mat here */
+      matmat_ikj(A, B, C);
+    }
+    t.stop();
+    double f = (2.0 * size * size * size) / 1.E9;
+    double e = ( t.elapsed()/((double) trips) ) / 1.E3;
+    if (e == 0.0) e = 10000;
+    flops.push_back(f / e );
+
+    sizes.push_back(size);
+
+    std::cout << size << "\t" << trips << "\t" << e << "\t" << e/trips << "\t" << f/e << std::endl;
+  }
+  plt::named_loglog("V of Vs, ikj", sizes, flops);
+
+
+  std::cout << "================================================================" << std::endl;
+  std::cout << "  Vector of Vectors, kji " << std::endl;
+  std::cout << "N\ttrips\ttotal\tavg\tGflops" << std::endl;
+  sizes.clear();
+  flops.clear();
+  for (size_t size = 16; size <= maxsize; size *= 2) {
+    size_t trips = 2 +  1024 * 1024 * 1024 / (size * size * size);
+    VoVMatrix A(size, size), B(size, size), C(size, size);
+    randomize(A); randomize(B); randomize(C);
+
+    t.start();
+    for (size_t trip = 0; trip <= trips; ++trip) {
+      /* call mat mat here */
+      matmat_kji(A, B, C);
+    }
+    t.stop();
+    double f = (2.0 * size * size * size) / 1.E9;
+    double e = ( t.elapsed()/((double) trips) ) / 1.E3;
+    if (e == 0.0) e = 10000;
+    flops.push_back(f / e );
+
+    sizes.push_back(size);
+
+    std::cout << size << "\t" << trips << "\t" << e << "\t" << e/trips << "\t" << f/e << std::endl;
+  }
+  plt::named_loglog("V of Vs, kji", sizes, flops);
 
 
   plt::xlim(16, (int) maxsize);

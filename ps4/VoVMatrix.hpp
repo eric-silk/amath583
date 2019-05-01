@@ -11,21 +11,30 @@
 #ifndef AMATH_583_GREEN_BELT_VOVMATRIX_HPP
 #define AMATH_583_GREEN_BELT_VOVMATRIX_HPP
 
+#include <assert.h>
 #include <vector>
 
 class VoVMatrix {
 public:
-  VoVMatrix(size_t M, size_t N) : num_rows_(M), num_cols_(N), storage_( /* Initialize Me */ ) {}
+  VoVMatrix(size_t M, size_t N) : num_rows_(M), num_cols_(N), storage_(M, std::vector<double>(N)) {}
 
-  double& operator()(size_t i, size_t j)       { /* Write me */ ; }
-  const double& operator()(size_t i, size_t j) const { /* Write me */ ; }
+  double& operator()(size_t i, size_t j)
+  {
+      assert(i < num_rows_ && j < num_cols_);
+      return storage_[i][j];
+  }
+  const double& operator()(size_t i, size_t j) const
+  {
+      assert(i < num_rows_ && j < num_cols_);
+      return storage_[i][j];
+  }
 
   size_t num_rows() const { return num_rows_; }
   size_t num_cols() const { return num_cols_; }
 
 private:
   size_t                           num_rows_, num_cols_;
-  /* Give me a type */ storage_;
+  std::vector<std::vector<double>> storage_;
 };
 
 #endif    // AMATH_583_GREEN_BELT_VOVMATRIX_HPP
