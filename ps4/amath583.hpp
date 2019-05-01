@@ -59,8 +59,10 @@ Matrix& operator-=(const Matrix& x, const Matrix& y);
 // ----------------------------------------------------------------
 Vector operator*(const Matrix& A, const Vector& x);
 void   matvec(const Matrix& A, const Vector& x, Vector& y);
+/* Declaration of matvec_ij goes here (583) */
+void matvec_ij(const Matrix& A, const Vector& x, Vector& y);
 /* Declaration of matvec_ji goes here (583) */
-/* Declaration of matvec_ji goes here (583) */
+void matvec_ji(const Matrix& A, const Vector& x, Vector& y);
 
 
 // ----------------------------------------------------------------

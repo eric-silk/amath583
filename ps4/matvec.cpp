@@ -50,7 +50,7 @@ int main(int argc, char* argv[]) {
 
     t.start();
     for (size_t trip = 0; trip <= trips; ++trip) {
-      /* Call ij here */
+      matvec_ij(A, x, y);
     }
     t.stop();
     double f = (2.0 * size * size ) / 1.E9;
@@ -78,6 +78,7 @@ int main(int argc, char* argv[]) {
     t.start();
     for (size_t trip = 0; trip <= trips; ++trip) {
       /* call ji here */
+      matvec_ji(A, x, y);
     }
     t.stop();
     double f = (2.0 * size * size ) / 1.E9;
