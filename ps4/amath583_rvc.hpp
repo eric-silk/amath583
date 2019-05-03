@@ -1,5 +1,3 @@
-
-
 #include <random>
 #include <functional>
 #include "RowMatrix.hpp"
@@ -32,11 +30,33 @@ void   randomize(ColMatrix& A) {
 
 
 
-void   matmat(const RowMatrix& A, const RowMatrix& B, RowMatrix& C) {
-  /* WRITE ME */
+void   matmat(const RowMatrix& A, const RowMatrix& B, RowMatrix& C)
+{
+    /* WRITE ME */
+    for (size_t i = 0; i < C.num_rows(); ++i)
+    {
+        for (size_t k = 0; k < C.num_cols(); ++k)
+        {
+            for (size_t j = 0; j < A.num_cols(); ++j)
+            {
+                C(i, j) += A(i, k) * B(k, j);
+            }
+        }
+    }
 }
 
 
-void   matmat(const ColMatrix& A, const ColMatrix& B, ColMatrix& C) {
-  /* WRITE ME */
+void   matmat(const ColMatrix& A, const ColMatrix& B, ColMatrix& C)
+{
+    /* WRITE ME */
+    for (size_t i = 0; i < C.num_cols(); ++i)
+    {
+        for (size_t k = 0; k < C.num_rows(); ++k)
+        {
+            for (size_t j = 0; j < A.num_rows(); ++j)
+            {
+                C(j, i) += A(k, i) * B(j, k);
+            }
+        }
+    }
 }
