@@ -11,7 +11,7 @@
 #ifndef AMATH_583_GREENBELT_MATRIX_HPP
 #define AMATH_583_GREENBELT_MATRIX_HPP
 
-#include <assert.h>
+#include <cassert>
 #include <vector>
 
 class Matrix {

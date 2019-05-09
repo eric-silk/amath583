@@ -11,7 +11,7 @@
 #ifndef AMATH_583_BLUEBELT_AMATH583_HPP
 #define AMATH_583_BLUEBELT_AMATH583_HPP
 
-#include <assert.h>
+#include <cassert>
 #include <functional>
 #include "Matrix.hpp"
 #include "Vector.hpp"

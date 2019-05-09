@@ -8,6 +8,7 @@
 // Author: Andrew Lumsdaine
 //
 
+#include <cassert>
 #include "Matrix.hpp"
 #include "Vector.hpp"
 
