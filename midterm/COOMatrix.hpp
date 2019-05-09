@@ -73,7 +73,16 @@ class COOMatrix
             }
         }
 
-        void matmat(const Matrix& B, Matrix& C) const {  /* Write Me */  }
+        void matmat(const Matrix& B, Matrix& C) const
+        {
+            // verify that MxN times NxP => MxP
+            assert(num_cols_ == B.num_rows());
+            assert(C.num_rows() == num_rows_());
+            assert(C.num_cols() = B.num_cols());
+
+            // TODO
+
+        }
 
 
     private:
