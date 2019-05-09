@@ -26,43 +26,51 @@
 // COOMatrix operations
 //
 // ----------------------------------------------------------------
-void   piscetize(COOMatrix& A, size_t xpoints, size_t ypoints) {
-  assert(A.num_rows() == A.num_cols());
-  assert(xpoints * ypoints == A.num_rows());
+void   piscetize(COOMatrix& A, size_t xpoints, size_t ypoints)
+{
+    assert(A.num_rows() == A.num_cols());
+    assert(xpoints * ypoints == A.num_rows());
 
-  A.clear();
+    A.clear();
 
-  for (size_t j = 0; j < xpoints; j++) {
-    for (size_t k = 0; k < ypoints; k++) {
-      size_t jrow = j * ypoints + k;
+    for (size_t j = 0; j < xpoints; j++)
+    {
+        for (size_t k = 0; k < ypoints; k++)
+        {
+            size_t jrow = j * ypoints + k;
 
-      if (j != 0) {
-        size_t jcol = (j - 1) * ypoints + k;
-        A.push_back(jrow, jcol, -1.0);
-      }
-      if (k != 0) {
-        size_t jcol = j * ypoints + (k - 1);
-        A.push_back(jrow, jcol, -1.0);
-      }
+            if (j != 0)
+            {
+                size_t jcol = (j - 1) * ypoints + k;
+                A.push_back(jrow, jcol, -1.0);
+            }
+            if (k != 0)
+            {
+                size_t jcol = j * ypoints + (k - 1);
+                A.push_back(jrow, jcol, -1.0);
+            }
 
-      A.push_back(jrow, jrow, 4.0);
+            A.push_back(jrow, jrow, 4.0);
 
-      if (k != ypoints - 1) {
-        size_t jcol = j * ypoints + (k + 1);
-        A.push_back(jrow, jcol, -1.0);
-      }
-      if (j != xpoints - 1) {
-        size_t jcol = (j + 1) * ypoints + k;
-        A.push_back(jrow, jcol, -1.0);
-      }
+            if (k != ypoints - 1)
+            {
+                size_t jcol = j * ypoints + (k + 1);
+                A.push_back(jrow, jcol, -1.0);
+            }
+            if (j != xpoints - 1)
+            {
+                size_t jcol = (j + 1) * ypoints + k;
+                A.push_back(jrow, jcol, -1.0);
+            }
+        }
     }
-  }
 }
 
-Vector operator*(const COOMatrix& A, const Vector& x) {
-  Vector y(A.num_rows());
-  A.matvec(x, y);
-  return y;
+Vector operator*(const COOMatrix& A, const Vector& x)
+{
+    Vector y(A.num_rows());
+    A.matvec(x, y);
+    return y;
 }
 
 Matrix operator*(const COOMatrix& A, const Matrix& B) { /* Write Me */ }
@@ -73,46 +81,54 @@ Matrix operator*(const COOMatrix& A, const Matrix& B) { /* Write Me */ }
 // CSRMatrix operations
 //
 // ----------------------------------------------------------------
-void   piscetize(CSRMatrix& A, size_t xpoints, size_t ypoints) {
-  assert(A.num_rows() == A.num_cols());
-  assert(xpoints*ypoints == A.num_rows());
+void   piscetize(CSRMatrix& A, size_t xpoints, size_t ypoints)
+{
+    assert(A.num_rows() == A.num_cols());
+    assert(xpoints*ypoints == A.num_rows());
 
-  A.clear();
-  A.open_for_push_back();
+    A.clear();
+    A.open_for_push_back();
 
-  for (size_t j = 0; j < xpoints; j++) {
-    for (size_t k = 0; k < ypoints; k++) {
-      size_t jrow = j*ypoints + k;
-      
-      if (j != 0) {
-	size_t jcol = (j-1)*ypoints + k;
-	A.push_back(jrow, jcol, -1.0);
-      }
-      if (k != 0) {
-	size_t jcol = j*ypoints + (k-1);
-	A.push_back(jrow, jcol, -1.0);
-      }
-      
-      A.push_back(jrow, jrow, 4.0);
-	
-      if (k != ypoints-1) {
-	size_t jcol = j*ypoints + (k+1);
-	A.push_back(jrow, jcol, -1.0);
-      }
-      if (j != xpoints-1) {
-	size_t jcol = (j+1)*ypoints + k;
-	A.push_back(jrow, jcol, -1.0);
-      }
+    for (size_t j = 0; j < xpoints; j++)
+    {
+        for (size_t k = 0; k < ypoints; k++)
+        {
+            size_t jrow = j*ypoints + k;
+
+            if (j != 0)
+            {
+                size_t jcol = (j-1)*ypoints + k;
+                A.push_back(jrow, jcol, -1.0);
+            }
+            if (k != 0)
+            {
+                size_t jcol = j*ypoints + (k-1);
+                A.push_back(jrow, jcol, -1.0);
+            }
+
+            A.push_back(jrow, jrow, 4.0);
+
+            if (k != ypoints-1)
+            {
+                size_t jcol = j*ypoints + (k+1);
+                A.push_back(jrow, jcol, -1.0);
+            }
+            if (j != xpoints-1)
+            {
+                size_t jcol = (j+1)*ypoints + k;
+                A.push_back(jrow, jcol, -1.0);
+            }
+        }
     }
-  }
-  A.close_for_push_back();
+    A.close_for_push_back();
 }
 
 
-Vector operator*(const CSRMatrix& A, const Vector& x) {
-  Vector y(A.num_rows());
-  A.matvec(x, y);
-  return y;
+Vector operator*(const CSRMatrix& A, const Vector& x)
+{
+Vector y(A.num_rows());
+A.matvec(x, y);
+return y;
 }
 
 
@@ -124,39 +140,46 @@ Matrix operator*(const CSRMatrix& A, const Matrix& B) { /* Write Me */ }
 // CSCMatrix operations
 //
 // ----------------------------------------------------------------
-void piscetize(CSCMatrix& A, size_t xpoints, size_t ypoints) {
-  assert(A.num_rows() == A.num_cols());
-  assert(xpoints*ypoints == A.num_rows());
+void piscetize(CSCMatrix& A, size_t xpoints, size_t ypoints)
+{
+    assert(A.num_rows() == A.num_cols());
+    assert(xpoints*ypoints == A.num_rows());
 
-  A.clear();
-  A.open_for_push_back();
+    A.clear();
+    A.open_for_push_back();
 
-  for (size_t j = 0; j < xpoints; j++) {
-    for (size_t k = 0; k < ypoints; k++) {
-      size_t jrow = j*ypoints + k;
-      
-      if (j != 0) {
-	size_t jcol = (j-1)*ypoints + k;
-	A.push_back(jcol, jrow, -1.0);
-      }
-      if (k != 0) {
-	size_t jcol = j*ypoints + (k-1);
-	A.push_back(jcol, jrow, -1.0);
-      }
-      
-      A.push_back(jrow, jrow, 4.0);
-	
-      if (k != ypoints-1) {
-	size_t jcol = j*ypoints + (k+1);
-	A.push_back(jcol, jrow, -1.0);
-      }
-      if (j != xpoints-1) {
-	size_t jcol = (j+1)*ypoints + k;
-	A.push_back(jcol, jrow, -1.0);
-      }
+    for (size_t j = 0; j < xpoints; j++)
+    {
+        for (size_t k = 0; k < ypoints; k++)
+        {
+            size_t jrow = j*ypoints + k;
+
+            if (j != 0)
+            {
+                size_t jcol = (j-1)*ypoints + k;
+                A.push_back(jcol, jrow, -1.0);
+            }
+            if (k != 0)
+            {
+                size_t jcol = j*ypoints + (k-1);
+                A.push_back(jcol, jrow, -1.0);
+            }
+
+            A.push_back(jrow, jrow, 4.0);
+
+            if (k != ypoints-1)
+            {
+                size_t jcol = j*ypoints + (k+1);
+                A.push_back(jcol, jrow, -1.0);
+            }
+            if (j != xpoints-1)
+            {
+                size_t jcol = (j+1)*ypoints + k;
+                A.push_back(jcol, jrow, -1.0);
+            }
+        }
     }
-  }
-  A.close_for_push_back();
+    A.close_for_push_back();
 }
 
 
@@ -170,37 +193,44 @@ Matrix operator*(const CSCMatrix& A, const Matrix& B) { /* Write Me for Extra Cr
 // AOSMatrix operations
 //
 // ----------------------------------------------------------------
-void piscetize(AOSMatrix& A, size_t xpoints, size_t ypoints) {
-  assert(A.num_rows() == A.num_cols());
-  assert(xpoints * ypoints == A.num_rows());
+void piscetize(AOSMatrix& A, size_t xpoints, size_t ypoints)
+{
+    assert(A.num_rows() == A.num_cols());
+    assert(xpoints * ypoints == A.num_rows());
 
-  A.clear();
+    A.clear();
 
-  for (size_t j = 0; j < xpoints; j++) {
-    for (size_t k = 0; k < ypoints; k++) {
-      size_t jrow = j * ypoints + k;
+    for (size_t j = 0; j < xpoints; j++)
+    {
+        for (size_t k = 0; k < ypoints; k++)
+        {
+            size_t jrow = j * ypoints + k;
 
-      if (j != 0) {
-        size_t jcol = (j - 1) * ypoints + k;
-        A.push_back(jrow, jcol, -1.0);
-      }
-      if (k != 0) {
-        size_t jcol = j * ypoints + (k - 1);
-        A.push_back(jrow, jcol, -1.0);
-      }
+            if (j != 0)
+            {
+                size_t jcol = (j - 1) * ypoints + k;
+                A.push_back(jrow, jcol, -1.0);
+            }
+            if (k != 0)
+            {
+                size_t jcol = j * ypoints + (k - 1);
+                A.push_back(jrow, jcol, -1.0);
+            }
 
-      A.push_back(jrow, jrow, 4.0);
+            A.push_back(jrow, jrow, 4.0);
 
-      if (k != ypoints - 1) {
-        size_t jcol = j * ypoints + (k + 1);
-        A.push_back(jrow, jcol, -1.0);
-      }
-      if (j != xpoints - 1) {
-        size_t jcol = (j + 1) * ypoints + k;
-        A.push_back(jrow, jcol, -1.0);
-      }
+            if (k != ypoints - 1)
+            {
+                size_t jcol = j * ypoints + (k + 1);
+                A.push_back(jrow, jcol, -1.0);
+            }
+            if (j != xpoints - 1)
+            {
+                size_t jcol = (j + 1) * ypoints + k;
+                A.push_back(jrow, jcol, -1.0);
+            }
+        }
     }
-  }
 }
 
 Vector operator*(const AOSMatrix& A, const Vector& x) {  /* Write Me */ }
