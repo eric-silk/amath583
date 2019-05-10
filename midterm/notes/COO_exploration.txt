@@ -35,3 +35,10 @@ A[val][5] is used to calculate c10, c11, c12
 A[val][6] is used to calculate c20, c21, c22
 A[val][7] is used to calculate c20, c21, c22
 A[val][8] is used to calculate c20, c21, c22
+
+so, as psuedocode, a matrix matrix mult expressed as a series of matrix vector mults would be:
+
+for(i=0; i<B.num_cols(), i++)
+{
+    A.matvec(B[column_i], C[column_i]);
+}
