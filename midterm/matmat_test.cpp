@@ -35,11 +35,6 @@ TEST_CASE("Coordinate Matrix", "[COO]") {
     Matrix C = A * B;
     for (size_t i = 0; i < 5; ++i) {
       for (size_t j = 0; j < 10; ++j) {
-          std::cout << C(i,j) << std::endl;
-      }
-    }
-    for (size_t i = 0; i < 5; ++i) {
-      for (size_t j = 0; j < 10; ++j) {
 	REQUIRE(B(i,j) != 0.0);
 	REQUIRE(C(i,j) == B(i,j));
       }

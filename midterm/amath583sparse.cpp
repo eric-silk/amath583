@@ -81,12 +81,12 @@ Matrix operator*(const COOMatrix& A, const Matrix& B)
     Matrix C(A.num_rows(), B.num_cols());
 
     // matmat is just repeated matvec. Blatantly abuse that function :D
-    for(size_t i=0; i<B.num_cols()-1; ++i)
+    for(size_t i=0; i<B.num_cols(); ++i)
     {
         // Get the column and push it into a vector
         Vector col_vec(B.num_rows());
         Vector result_vec(B.num_rows());
-        for(size_t j=0; j<B.num_rows()-1; ++j)
+        for(size_t j=0; j<B.num_rows(); ++j)
         {
             // step through the column and get all elements
             col_vec(j) = B(j,i);
@@ -96,7 +96,7 @@ Matrix operator*(const COOMatrix& A, const Matrix& B)
         A.matvec(col_vec, result_vec);
 
         // Now push this into the correct column of the result
-        for(size_t j=0; j<A.num_rows()-1; ++j)
+        for(size_t j=0; j<C.num_rows(); ++j)
         {
             C(j,i) = result_vec(j);
         }
