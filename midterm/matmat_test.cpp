@@ -44,7 +44,6 @@ TEST_CASE("Coordinate Matrix", "[COO]") {
 }  
 
 
-/*
 TEST_CASE("Compressed Sparse Row Matrix", "[CSR]") {
 
   SECTION("test identity") {
@@ -62,7 +61,6 @@ TEST_CASE("Compressed Sparse Row Matrix", "[CSR]") {
 
   }
 }  
-
 
 #ifdef TEST_CSC
 TEST_CASE("Compressed Sparse Column Matrix", "[CSC]") {
@@ -103,4 +101,3 @@ TEST_CASE("Array of Structs Matrix", "[AOS]") {
   }
 }  
 #endif
-*/

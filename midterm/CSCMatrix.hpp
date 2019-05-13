@@ -11,6 +11,7 @@
 #ifndef __CSCMATRIX_HPP
 #define __CSCMATRIX_HPP
 
+#include <iostream>
 #include "Vector.hpp"
 #include <algorithm>
 #include <cassert>
@@ -24,7 +25,10 @@ class CSCMatrix
                                         num_cols_(N),
                                         col_indices_(num_cols_ + 1, 0) {}
 
-        void open_for_push_back() { is_open = true; }
+        void open_for_push_back()
+        {
+            is_open = true;
+        }
 
         void close_for_push_back()
         {
@@ -40,7 +44,17 @@ class CSCMatrix
             col_indices_[0] = 0;
         }
 
-        void push_back(size_t i, size_t j, double value) { /* Write Me */   }
+        void push_back(size_t i, size_t j, double value)
+        {
+            assert(is_open);
+            assert(i < num_cols_ && i >= 0);
+            assert(j < num_rows_ && j >= 0);
+            assert(i < col_indices_.size() && i >= 0);
+
+            ++col_indices_[i];
+            row_indices_.push_back(j);
+            storage_.push_back(value);
+        }
 
         void clear()
         {
@@ -53,9 +67,32 @@ class CSCMatrix
         size_t num_cols() const { return num_cols_; }
         size_t num_nonzeros() const { return storage_.size(); }
 
-        void stream_coordinates(std::ostream& output_file) const {  /* Write Me */  }
+        void stream_coordinates(std::ostream& output_file) const
+        {
+            for (size_t i = 0; i < num_cols_; ++i)
+            {
+                for (size_t j = col_indices_[i]; j < col_indices_[i+1]; ++j)
+                {
+                    output_file << i               << " ";
+                    output_file << row_indices_[j] << " ";
+                    output_file <<     storage_[j]       ;
+                    output_file << std::endl;
+                }
+            }
+        }
 
-        void matvec(const Vector& x, Vector& y) const { /* Write Me */  }
+        void matvec(const Vector& x, Vector& y) const
+        {
+            assert(x.num_rows() == y.num_rows());
+            assert(num_cols_ == y.num_rows());
+            for (size_t i = 0; i < num_cols_; ++i)
+            {
+                for (size_t j = col_indices_[i]; j < col_indices_[i+1]; ++j)
+                {
+                    y(i) += storage_[j] * x(row_indices_[j]);
+                }
+            }
+        }
 
         void matmat(const Matrix& B, Matrix& C) const {  /* Write Me for Extra Credit*/  }
 

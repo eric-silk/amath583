@@ -77,17 +77,15 @@ class COOMatrix
         {
             // verify that MxN times NxP => MxP
             assert(num_cols_ == B.num_rows());
-            assert(C.num_rows() == num_rows());
-            assert(C.num_cols() == B.num_cols());
+            assert(C.num_rows() == B.num_cols());
 
-            // TODO
-            // matmat is just repeated matvec. Blatantly abuse the above function :D
-            for(size_t i=0; i<B.num_cols(); i++)
+            // matmat is just repeated matvec. Blatantly abuse that function :D
+            for(size_t i=0; i<B.num_cols(); ++i)
             {
                 // Get the column and push it into a vector
                 Vector col_vec(B.num_rows());
                 Vector result_vec(B.num_rows());
-                for(size_t j=0; j<B.num_rows(); j++)
+                for(size_t j=0; j<B.num_rows(); ++j)
                 {
                     // step through the column and get all elements
                     col_vec(j) = B(j,i);
@@ -97,12 +95,11 @@ class COOMatrix
                 matvec(col_vec, result_vec);
 
                 // Now push this into the correct column of the result
-                for(size_t j=0; j<C.num_cols(); j++)
+                for(size_t j=0; j<C.num_rows(); ++j)
                 {
                     C(j,i) = result_vec(j);
                 }
             }
-
         }
 
 

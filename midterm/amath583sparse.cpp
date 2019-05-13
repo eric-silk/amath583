@@ -156,13 +156,42 @@ void   piscetize(CSRMatrix& A, size_t xpoints, size_t ypoints)
 
 Vector operator*(const CSRMatrix& A, const Vector& x)
 {
-Vector y(A.num_rows());
-A.matvec(x, y);
-return y;
+    Vector y(A.num_rows());
+    A.matvec(x, y);
+    return y;
 }
 
 
-Matrix operator*(const CSRMatrix& A, const Matrix& B) { /* Write Me */ }
+Matrix operator*(const CSRMatrix& A, const Matrix& B)
+{
+    // verify that MxN times NxP => MxP
+    assert(A.num_cols() == B.num_rows());
+    Matrix C(A.num_rows(), B.num_cols());
+
+    // matmat is just repeated matvec. Blatantly abuse that function :D
+    for(size_t i=0; i<B.num_cols(); ++i)
+    {
+        // Get the column and push it into a vector
+        Vector col_vec(B.num_rows());
+        Vector result_vec(B.num_rows());
+        for(size_t j=0; j<B.num_rows(); ++j)
+        {
+            // step through the column and get all elements
+            col_vec(j) = B(j,i);
+        }
+
+        // Use the above function
+        A.matvec(col_vec, result_vec);
+
+        // Now push this into the correct column of the result
+        for(size_t j=0; j<C.num_rows(); ++j)
+        {
+            C(j,i) = result_vec(j);
+        }
+    }
+    
+    return C;
+}
 
 
 // ----------------------------------------------------------------
@@ -213,7 +242,12 @@ void piscetize(CSCMatrix& A, size_t xpoints, size_t ypoints)
 }
 
 
-Vector operator*(const CSCMatrix& A, const Vector& x) {  /* Write Me */  }
+Vector operator*(const CSCMatrix& A, const Vector& x)
+{
+    Vector y(A.num_cols());
+    A.matvec(x, y);
+    return y;
+}
 
 Matrix operator*(const CSCMatrix& A, const Matrix& B) { /* Write Me for Extra Credit */  }
 

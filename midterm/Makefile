@@ -11,13 +11,13 @@
 CXX             := c++
 
 # No optimization, plus debugging symbols
- OPTS            := -g -O0
+  OPTS            := -g -O0
 
 # Uncomment this to test CSC
-# CSC		+= -DTEST_CSC
+ CSC		+= -DTEST_CSC
 
 # Uncomment this to time CSC
-# CSC		+= -DTIME_CSC
+ CSC		+= -DTIME_CSC
 
 # Uncomment this to test AOS
 # AOS		+= -DTEST_AOS
