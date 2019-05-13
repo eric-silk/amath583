@@ -6,7 +6,8 @@
 // https://creativecommons.org/licenses/by-nc-sa/4.0/
 //
 // Author: Andrew Lumsdaine
-//
+
+#include <iostream>
 
 #include <cassert>
 #include "Matrix.hpp"
@@ -73,7 +74,36 @@ Vector operator*(const COOMatrix& A, const Vector& x)
     return y;
 }
 
-Matrix operator*(const COOMatrix& A, const Matrix& B) { /* Write Me */ }
+Matrix operator*(const COOMatrix& A, const Matrix& B)
+{
+    // verify that MxN times NxP => MxP
+    assert(A.num_cols() == B.num_rows());
+    Matrix C(A.num_rows(), B.num_cols());
+
+    // matmat is just repeated matvec. Blatantly abuse that function :D
+    for(size_t i=0; i<B.num_cols()-1; ++i)
+    {
+        // Get the column and push it into a vector
+        Vector col_vec(B.num_rows());
+        Vector result_vec(B.num_rows());
+        for(size_t j=0; j<B.num_rows()-1; ++j)
+        {
+            // step through the column and get all elements
+            col_vec(j) = B(j,i);
+        }
+
+        // Use the above function
+        A.matvec(col_vec, result_vec);
+
+        // Now push this into the correct column of the result
+        for(size_t j=0; j<A.num_rows()-1; ++j)
+        {
+            C(j,i) = result_vec(j);
+        }
+    }
+    
+    return C;
+}
 
 
 // ----------------------------------------------------------------

@@ -77,8 +77,8 @@ class COOMatrix
         {
             // verify that MxN times NxP => MxP
             assert(num_cols_ == B.num_rows());
-            assert(C.num_rows() == num_rows_());
-            assert(C.num_cols() = B.num_cols());
+            assert(C.num_rows() == num_rows());
+            assert(C.num_cols() == B.num_cols());
 
             // TODO
             // matmat is just repeated matvec. Blatantly abuse the above function :D
