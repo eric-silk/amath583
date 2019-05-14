@@ -85,13 +85,10 @@ class CSRMatrix
         {
             assert(x.num_rows() == y.num_rows());
             assert(num_cols_ == y.num_rows());
-            std::cout << "CSRMatrix" << std::endl;
-            std::cout << "i j" << std::endl << "------------------" << std::endl;
             for (size_t i = 0; i < num_rows_; ++i)
             {
                 for (size_t j = row_indices_[i]; j < row_indices_[i+1]; ++j)
                 {
-                    std::cout << i << " " << j << std::endl;
                     y(i) += storage_[j] * x(col_indices_[j]);
                 }
             }
