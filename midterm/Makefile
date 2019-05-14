@@ -14,16 +14,16 @@ CXX             := c++
   OPTS            := -g -O0
 
 # Uncomment this to test CSC
- CSC		+= -DTEST_CSC
+# CSC		+= -DTEST_CSC
 
 # Uncomment this to time CSC
- CSC		+= -DTIME_CSC
+# CSC		+= -DTIME_CSC
 
 # Uncomment this to test AOS
-# AOS		+= -DTEST_AOS
+  AOS		+= -DTEST_AOS
 
 # Uncomment this to time AOS
-# AOS		+= -DTIME_AOS
+  AOS		+= -DTIME_AOS
 
 # Maximum optimization effort: -O3 -march=native -DNDEBUG
 #OPTS            := -O3 -march=native -DNDEBUG

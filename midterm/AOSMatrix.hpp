@@ -25,7 +25,13 @@ class AOSMatrix
         public:
         AOSMatrix(size_t M, size_t N) : num_rows_(M), num_cols_(N) {}
 
-        void push_back(size_t i, size_t j, double val) { /* Write Me */  }
+        void push_back(size_t i, size_t j, double val)
+        {
+            assert(i < num_rows_ && i >= 0);
+            assert(j < num_cols_ && j >= 0);
+
+            storage_.push_back(element(i, j, val));
+        }
 
         void clear() { storage_.clear(); }
 
@@ -39,9 +45,26 @@ class AOSMatrix
         size_t num_cols() const { return num_cols_; }
         size_t num_nonzeros() const { return storage_.size(); }
 
-        void stream_coordinates(std::ostream& output_file) const {  /* Write Me */  }
+        void stream_coordinates(std::ostream& output_file) const
+        {
+            for (size_t i = 0; i < num_nonzeros(); ++i)
+            {
+                // TODO create constant types (or an ENUM?) for tuple access
+                // moar redable tht wai
+                output_file << std::get<0>(storage_[i]) << " ";
+                output_file << std::get<1>(storage_[i]) << " ";
+                output_file << std::get<2>(storage_[i])       ;
+                output_file << std::endl;
+            }
+        }
 
-        void matvec(const Vector& x, Vector& y) const {  /* Write Me */  }
+        void matvec(const Vector& x, Vector& y) const
+        {
+            for (size_t k = 0; k < storage_.size(); ++k)
+            {
+                y(std::get<0>(storage_[k])) += std::get<2>(storage_[k]) * x(std::get<1>(storage_[k]));
+            }
+        }
 
         void matmat(const Matrix& B, Matrix& C) const {  /* Write Me for Extra Credit*/  }
 
