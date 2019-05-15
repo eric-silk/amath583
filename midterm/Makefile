@@ -11,7 +11,7 @@
 CXX             := c++
 
 # No optimization, plus debugging symbols
-# OPTS            := -g -O0
+#  OPTS            := -g -O0
 
 # Uncomment this to test CSC
  CSC		+= -DTEST_CSC
@@ -20,13 +20,13 @@ CXX             := c++
  CSC		+= -DTIME_CSC
 
 # Uncomment this to test AOS
-  AOS		+= -DTEST_AOS
+ AOS		+= -DTEST_AOS
 
 # Uncomment this to time AOS
-  AOS		+= -DTIME_AOS
+ AOS		+= -DTIME_AOS
 
 # Maximum optimization effort: -O3 -march=native -DNDEBUG
- OPTS            := -O3 -march=native -DNDEBUG
+  OPTS            := -O3 -march=native -DNDEBUG
 LANG            := -std=c++17
 PICKY           := -Wall
 DEFS		:= $(CSC) $(AOS)

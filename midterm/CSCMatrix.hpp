@@ -51,8 +51,8 @@ class CSCMatrix
             assert(j < num_rows_ && j >= 0);
             assert(i < col_indices_.size() && i >= 0);
 
-            ++col_indices_[i];
-            row_indices_.push_back(j);
+            ++col_indices_[j];
+            row_indices_.push_back(i);
             storage_.push_back(value);
         }
 
@@ -85,17 +85,51 @@ class CSCMatrix
         {
             assert(x.num_rows() == y.num_rows());
             assert(num_cols_ == y.num_rows());
+            // The algorithm here "should" be the same as the CSR matrix, BUT:
+            // - the outer loop should be driven by the columns
+            // - the inner loop should be driven by the numer of nonzero elements per column
+            // This algorithm "should" work from everything I've found online, and my own
+            // understanding of how CSC matrices should work.
+            // But it doesn't, except for the I matrix. I don't get why.
             for (size_t col = 0; col < num_cols_; ++col)
             {
                 for (size_t j = col_indices_[col]; j < col_indices_[col+1]; ++j)
                 {
-                    //y(i) += storage_[j] * x(row_indices_[j]);
+                    // "row_indices_[j]" is the row of the jth element;
+                    // we want the element in x located at the current column (row*column)
                     y(row_indices_[j]) += storage_[j] * x(col);
                 }
             }
         }
 
-        void matmat(const Matrix& B, Matrix& C) const {  /* Write Me for Extra Credit*/  }
+        void matmat(const Matrix& B, Matrix& C) const
+        {
+            // verify that MxN times NxP => MxP
+            assert(num_cols_ == B.num_rows());
+            assert(C.num_rows() == B.num_cols());
+
+            // matmat is just repeated matvec. Blatantly abuse that function :D
+            for(size_t i=0; i<B.num_cols(); ++i)
+            {
+                // Get the column and push it into a vector
+                Vector col_vec(B.num_rows());
+                Vector result_vec(B.num_rows());
+                for(size_t j=0; j<B.num_rows(); ++j)
+                {
+                    // step through the column and get all elements
+                    col_vec(j) = B(j,i);
+                }
+
+                // Use the above function
+                matvec(col_vec, result_vec);
+
+                // Now push this into the correct column of the result
+                for(size_t j=0; j<C.num_rows(); ++j)
+                {
+                    C(j,i) = result_vec(j);
+                }
+            }
+        }
 
 
     private:
