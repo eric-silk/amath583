@@ -85,13 +85,12 @@ class CSCMatrix
         {
             assert(x.num_rows() == y.num_rows());
             assert(num_cols_ == y.num_rows());
-            std::cout << "i j" << std::endl << "------------------" << std::endl;
-            for (size_t i = 0; i < num_cols_; ++i)
+            for (size_t col = 0; col < num_cols_; ++col)
             {
-                for (size_t j = col_indices_[i]; j < col_indices_[i+1]; ++j)
+                for (size_t j = col_indices_[col]; j < col_indices_[col+1]; ++j)
                 {
-                    std::cout << i << " " << j << std::endl;
-                    y(i) += storage_[j] * x(row_indices_[j]);
+                    //y(i) += storage_[j] * x(row_indices_[j]);
+                    y(row_indices_[j]) += storage_[j] * x(col);
                 }
             }
         }
