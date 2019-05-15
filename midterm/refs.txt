@@ -1,1 +1,2 @@
 https://stackoverflow.com/questions/29598299/csr-matrix-matrix-multiplication
+https://stackoverflow.com/questions/12265698/multiplication-of-a-sparse-matrix-in-compressed-column-storage-with-a-column-vec
