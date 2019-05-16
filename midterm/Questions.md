@@ -70,3 +70,11 @@ There is no significant difference as far as I can tell. The representations are
 same, and caching/accessing a struct of arrays vs. an array of structs has roughly the same
 performance requirements.
 
+
+#### Errata
+
+It is worth pointing out that there is currently significant portions of repeated code, varying really only in their argument
+type (COO vs. CSR, etc). Because of this, we could "easily" convert these into a template function, such that only the matvec
+function for each needs to differ.
+
+But its already Wednesday evening and had my fill of this for now.
