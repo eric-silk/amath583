@@ -85,18 +85,13 @@ class CSCMatrix
         {
             assert(x.num_rows() == y.num_rows());
             assert(num_cols_ == y.num_rows());
-            // The algorithm here "should" be the same as the CSR matrix, BUT:
+            // The algorithm here is roughly the same as the CSR matrix, but:
             // - the outer loop should be driven by the columns
             // - the inner loop should be driven by the numer of nonzero elements per column
-            // This algorithm "should" work from everything I've found online, and my own
-            // understanding of how CSC matrices should work.
-            // But it doesn't, except for the I matrix. I don't get why.
             for (size_t col = 0; col < num_cols_; ++col)
             {
                 for (size_t j = col_indices_[col]; j < col_indices_[col+1]; ++j)
                 {
-                    // "row_indices_[j]" is the row of the jth element;
-                    // we want the element in x located at the current column (row*column)
                     y(row_indices_[j]) += storage_[j] * x(col);
                 }
             }
