@@ -27,7 +27,7 @@ No, floats/doubles do not add associatively. Thus, changing their order changes 
 Do you have any concerns about this kind of behavior?
 
 Of course, but generally it can be disregarded for "real world" problems. This of course
-depends on the specific problem, but generally I wouldn't be fussed if error introduced
+depends on the specific problem, but generally I wouldn't be fussed if the relative error introduced
 is on the order of 10^-6 or less. The fact that relative error seems to stay exceedingly small
 is likely due to the nature of floating point variables.
 
@@ -39,11 +39,18 @@ At what number of threads do you start to see a difference between `norm4` and `
  that you can run as many threads as you like (recall the difference between concurrency and pa\
 rallelism).
 
+Even at 1 thread there appears to be some difference.
+
 **Q**
 Is this difference always the same?
 
+No, increasing the number of threads seems to increase the error.
+
 **Q**
 Do you have any concerns about this kind of behavior?
+
+Again, my concern would be motivated by a given problem. For stuff like this, no. For landing someone
+on the moon -- I would definitely keep it in the back of my head.
 
 
 #### Norm! (Recursion Version)
