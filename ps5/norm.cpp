@@ -20,9 +20,14 @@
 int main(int argc, char *argv[]) {
 
   size_t N = 1024 * 1024;
+  size_t numthreads = 1;
 
-  if (argc == 2) {
+  if (argc >= 2) {
     N = std::stol(argv[1]);
+  }
+
+  if (argc >=3) {
+    numthreads = std::stol(argv[2]);
   }
 
   Vector v(N);
@@ -52,7 +57,6 @@ int main(int argc, char *argv[]) {
     std::cout << "Relative difference: " << std::abs(norm2-norm0)/norm0 << std::endl;
   }
 
-
   // Write me: sort v in descending order */
   sort_descending(v);
   double norm3 = two_norm(v);
@@ -60,8 +64,15 @@ int main(int argc, char *argv[]) {
 
   //assert(norm0 == norm3);  // Is this safe / correct to do?
   if (norm3 != norm0) {
-    std::cout << "Absolute difference: " << std::abs(norm2-norm0) << std::endl;
-    std::cout << "Relative difference: " << std::abs(norm2-norm0)/norm0 << std::endl;
+    std::cout << "Absolute difference: " << std::abs(norm3-norm0) << std::endl;
+    std::cout << "Relative difference: " << std::abs(norm3-norm0)/norm0 << std::endl;
+  }
+
+  double norm4 = partitioned_two_norm(v, numthreads);
+  std::cout << "Calling partitioned_two_norm: " << norm4 << std::endl;
+  if (norm4 != norm0) {
+    std::cout << "Absolute difference: " << std::abs(norm4-norm0) << std::endl;
+    std::cout << "Relative difference: " << std::abs(norm4-norm0)/norm0 << std::endl;
   }
 
   return 0;

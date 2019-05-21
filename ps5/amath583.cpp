@@ -108,7 +108,8 @@ double p_norm(const Vector& x);
 //
 // ----------------------------------------------------------------
 
-std::mutex pnorm_mutex;
+// Static to keep it local to this file
+static std::mutex pnorm_mutex;
 
 double partitioned_two_norm(const Vector& x, size_t partitions)
 {
@@ -136,7 +137,9 @@ double partitioned_two_norm(const Vector& x, size_t partitions)
     }
 
     // The lambda
-    auto f = [&] (size_t const start, size_t const stop) -> void
+    // Only capture x and sum, rather than all with just the "&" character
+    // "=" was also considered, but would a) produce overhead and b) wont' work for sum
+    auto f = [&x, &sum] (size_t const start, size_t const stop) -> void
     {
         double part_sum = 0.0;
         for (size_t i = start; i < stop; ++i)
@@ -161,7 +164,7 @@ double partitioned_two_norm(const Vector& x, size_t partitions)
         threads[i].join();
     }
 
-    return sum;
+    return std::sqrt(sum);
 }
 
 double recursive_two_norm(const Vector& x, size_t levels)
