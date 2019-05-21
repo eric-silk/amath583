@@ -17,6 +17,9 @@
 #include <random>
 #include <algorithm>
 
+#include <thread>
+#include <future>
+
 // ----------------------------------------------------------------
 //
 // Vector arithmetic
@@ -105,19 +108,63 @@ double p_norm(const Vector& x);
 //
 // ----------------------------------------------------------------
 
+std::mutex pnorm_mutex;
+
 double partitioned_two_norm(const Vector& x, size_t partitions)
 {
+    assert(partitions > 0);
+    assert(x.num_rows() > 0);
+    assert(x.num_rows() > partitions); // maybe not needed?
+
+    double sum = 0.0;
+
     // split the vector into partitions (or partition ranges)
-    size_t partition_width = x.num_rows() / partitions;
+    const size_t step_size = x.num_rows() / partitions;
     size_t leftover = x.num_rows() % partitions;
+    std::vector<size_t> offsets;
+    offsets.push_back(0);
+    for (size_t i = 0; i < partitions; ++i)
+    {
+        size_t step = step_size;
+        if (leftover > 0)
+        {
+            step +=1;
+            leftover -= 1;
+        }
+        // stuff the offsets into a vector
+        offsets.push_back(offsets.back() + step);
+    }
 
-    // write the lambda
-    auto f = [/* Probably the vector? */] (/* Likely the partition information */) -> {/* TODO */};
+    // The lambda
+    auto f = [&] (size_t const start, size_t const stop) -> void
+    {
+        double part_sum = 0.0;
+        for (size_t i = start; i < stop; ++i)
+        {
+            part_sum += x(i) * x(i);
+        }
+        {
+            // Lock guard per the slides
+            std::lock_guard<std::mutex> pnorm_guard(pnorm_mutex);
+            sum += part_sum;
+        }
+    };
 
-    //call std::thread() partition times
+    // Call std::thread() "partition" times
+    std::vector<std::thread> threads;
+    for (size_t i = 0; i < partitions; ++i)
+    {
+        threads.push_back(std::thread(f, offsets[i], offsets[i+1]));
+    }
+    for (size_t i = 0; i < partitions; ++i)
+    {
+        threads[i].join();
+    }
+
+    return sum;
 }
 
-double recursive_two_norm(const Vector& x, size_t levels);
+double recursive_two_norm(const Vector& x, size_t levels)
 {
     // TODO
     return 0.0;

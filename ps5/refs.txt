@@ -1,0 +1,2 @@
+https://stackoverflow.com/questions/22332181/passing-lambdas-to-stdthread-and-calling-class-methods
+https://stackoverflow.com/questions/6861089/how-to-split-a-vector-into-n-almost-equal-parts
