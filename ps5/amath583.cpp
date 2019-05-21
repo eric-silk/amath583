@@ -15,6 +15,7 @@
 #include <cmath>
 #include <functional>
 #include <random>
+#include <algorithm>
 
 // ----------------------------------------------------------------
 //
@@ -35,6 +36,42 @@ void randomize(Vector& x) {
   for (size_t i = 0; i < x.num_rows(); ++i) {
     x(i) = dice();
   }
+}
+
+void sort_ascending(Vector& x)
+{
+    // Inefficient probably but w/e
+    // Create a copy of the Vector as a Vector
+    std::vector<double> tmp;
+    for(size_t i=0; i<x.num_rows(); ++i)
+    {
+        tmp.push_back(x(i));
+    }
+
+    std::sort(tmp.begin(), tmp.end());
+
+    for(size_t i=0; i<x.num_rows(); ++i)
+    {
+        x(i) = tmp[i];
+    }
+}
+
+void sort_descending(Vector& x)
+{
+    // Inefficient probably but w/e
+    // Create a copy of the Vector as a Vector
+    std::vector<double> tmp;
+    for(size_t i=0; i<x.num_rows(); ++i)
+    {
+        tmp.push_back(x(i));
+    }
+
+    std::sort(tmp.begin(), tmp.end(), std::greater<double>());
+
+    for(size_t i=0; i<x.num_rows(); ++i)
+    {
+        x(i) = tmp[i];
+    }
 }
 
 double one_norm(const Vector& x) {

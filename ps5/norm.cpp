@@ -14,6 +14,7 @@
 #include <cmath>
 #include <string>
 #include <iostream>
+#include <algorithm>
 
 
 int main(int argc, char *argv[]) {
@@ -40,6 +41,8 @@ int main(int argc, char *argv[]) {
 
 
   // Write me: sort v in ascending order */
+
+  sort_ascending(v);
   double norm2 = two_norm(v);
   std::cout << "Calling two_norm with ascending values: " << norm2 << std::endl;
 
@@ -51,10 +54,15 @@ int main(int argc, char *argv[]) {
 
 
   // Write me: sort v in descending order */
+  sort_descending(v);
   double norm3 = two_norm(v);
   std::cout << "Calling two_norm with descending values: " << norm3 << std::endl;
 
-  assert(norm0 == norm3);  // Is this safe / correct to do?
+  //assert(norm0 == norm3);  // Is this safe / correct to do?
+  if (norm3 != norm0) {
+    std::cout << "Absolute difference: " << std::abs(norm2-norm0) << std::endl;
+    std::cout << "Relative difference: " << std::abs(norm2-norm0)/norm0 << std::endl;
+  }
 
   return 0;
 }

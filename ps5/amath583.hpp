@@ -22,6 +22,9 @@
 void zeroize(Vector& x);
 void randomize(Vector& x);
 
+void sort_ascending(Vector& x);
+void sort_descending(Vector& x);
+
 double one_norm(const Vector& x);
 double two_norm(const Vector& x);
 double inf_norm(const Vector& x);
