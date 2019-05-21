@@ -74,6 +74,12 @@ void sort_descending(Vector& x)
     }
 }
 
+// ----------------------------------------------------------------
+//
+// Single threaded Norms
+//
+// ----------------------------------------------------------------
+
 double one_norm(const Vector& x) {
   double sum = 0.0;
   for (size_t i = 0; i < x.num_rows(); ++i) {
@@ -92,6 +98,30 @@ double two_norm(const Vector& x) {
 
 double inf_norm(const Vector& x);
 double p_norm(const Vector& x);
+
+// ----------------------------------------------------------------
+//
+// Multithreaded Norms
+//
+// ----------------------------------------------------------------
+
+double partitioned_two_norm(const Vector& x, size_t partitions)
+{
+    // split the vector into partitions (or partition ranges)
+    size_t partition_width = x.num_rows() / partitions;
+    size_t leftover = x.num_rows() % partitions;
+
+    // write the lambda
+    auto f = [/* Probably the vector? */] (/* Likely the partition information */) -> {/* TODO */};
+
+    //call std::thread() partition times
+}
+
+double recursive_two_norm(const Vector& x, size_t levels);
+{
+    // TODO
+    return 0.0;
+}
 
 Vector abs(const Vector& x) {
   Vector y(x.num_rows());
