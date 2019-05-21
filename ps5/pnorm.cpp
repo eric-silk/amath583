@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
     std::cout << "||v|| = " << part_norm <<std::endl;
   }
 
-  plt::xlim(1, maxthreads);
+  plt::xlim(size_t (1), maxthreads);
   plt::xlabel("Number of threads");
   plt::ylabel("Time(ms)");
 
