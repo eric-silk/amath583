@@ -169,8 +169,15 @@ double partitioned_two_norm(const Vector& x, size_t partitions)
 
 double recursive_two_norm(const Vector& x, size_t levels)
 {
-    // TODO
-    return 0.0;
+    // This implementation assumes we are supposed to recursively calculate the partial
+    // sum of squares on each sub-vector. TBD if that's correct, pending instructor feedback
+    // on Piazza (Question @171).
+
+    // Determine the number of partitions based upon the maximum level of recursion
+
+    // Write the lambda to do the recursive calculation
+    
+    // Call std::async for creating multiple tasks
 }
 
 Vector abs(const Vector& x) {
