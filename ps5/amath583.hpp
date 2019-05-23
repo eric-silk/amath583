@@ -33,6 +33,7 @@ double p_norm(const Vector& x);
 
 // Multithreaded Norms
 double partitioned_two_norm(const Vector& x, size_t partitions);
+// Recursively partition the vector! (per lecture!)
 double recursive_two_norm(const Vector& x, size_t levels);
 
 

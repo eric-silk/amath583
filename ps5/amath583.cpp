@@ -180,6 +180,10 @@ double recursive_two_norm(const Vector& x, size_t levels)
     // This implementation assumes we are supposed to recursively calculate the partial
     // sum of squares on each sub-vector. TBD if that's correct, pending instructor feedback
     // on Piazza (Question @171).
+    //
+    // Per lecture, we are supposed to recursively partition the vector, e.g.
+    // |----| -> |--||--| -> |-||-||-||-|
+    // Need to fix!!
 
     double sum = 0.0;
 
