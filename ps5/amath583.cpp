@@ -378,7 +378,7 @@ void matvec(const Matrix& A, const Vector& x, Vector& y) {
   }
 }
 
-/* Definition of matvec_ji goes here (583) */
+/* Definition of matvec_ij goes here (583) */
 void matvec_ij(const Matrix& A, const Vector& x, Vector& y) {
   for (size_t i = 0; i < A.num_rows(); ++i) {
     for (size_t j = 0; j < A.num_cols(); ++j) {
@@ -402,7 +402,8 @@ static std::mutex matvec_mutex;
 
 void par_matvec(const Matrix& A, const Vector& x, Vector& y, size_t partitions)
 {
-    // TODO
+    assert(x.num_rows() == y.num_rows());
+    assert(A.num_cols() == y.num_rows());
     // Split the Matrix into "partition" sub-matrices, each "partition" rows by J columns
     // split the vector into partitions (or partition ranges)
     const size_t step_size = x.num_rows() / partitions;
@@ -441,9 +442,9 @@ void par_matvec(const Matrix& A, const Vector& x, Vector& y, size_t partitions)
         assert(row_start >= 0);
         assert(row_stop < A.num_cols());
 
-        for (size_t j = 0; j < A.num_cols(); ++j)
+        for (size_t i = row_start; i < row_stop; ++i)
         {
-            for (size_t i = row_start; i < A.num_rows(); ++i)
+            for (size_t j = 0; j < A.num_cols(); ++j)
             {
                 subvectors[partition](i) += A(i, j) * x(j);
             }
