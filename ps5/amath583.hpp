@@ -35,6 +35,7 @@ double p_norm(const Vector& x);
 double partitioned_two_norm(const Vector& x, size_t partitions);
 double recursive_two_norm(const Vector& x, size_t levels);
 
+
 Vector abs(const Vector& x);
 
 Vector operator*(double alpha, const Vector& x);
@@ -75,6 +76,9 @@ Matrix& operator-=(const Matrix& x, const Matrix& y);
 // ----------------------------------------------------------------
 Vector operator*(const Matrix& A, const Vector& x);
 void   matvec(const Matrix& A, const Vector& x, Vector& y);
+
+// AMATH 583 problem
+void par_matvec(const Matrix& A, const Vector& x, Vector& y, size_t partitions);
 
 // ----------------------------------------------------------------
 //
