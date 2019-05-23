@@ -172,9 +172,6 @@ double partitioned_two_norm(const Vector& x, size_t partitions)
     return std::sqrt(sum);
 }
 
-// Static to keep it local to this file
-static std::mutex rnorm_mutex;
-
 double recursive_two_norm(const Vector& x, size_t levels)
 {
     // This implementation assumes we are supposed to recursively calculate the partial
@@ -183,71 +180,37 @@ double recursive_two_norm(const Vector& x, size_t levels)
     //
     // Per lecture, we are supposed to recursively partition the vector, e.g.
     // |----| -> |--||--| -> |-||-||-||-|
+    // |-----| -> |---||--| -> |--||-||-||-| -> |-||-||-||-||-|
     // Need to fix!!
 
-    double sum = 0.0;
-
-    // Determine the number of partitions based upon the maximum level of recursion
-    // "0" levels of recursion is 1 level deep for this
-    levels += 1;
-    size_t partitions = x.num_rows() / levels;
-    if (x.num_rows() % levels)
-    {
-        partitions += 1;
-    }
-
-    /*
-    std::cout << "Levels:" << levels << std::endl;
-    std::cout << "x.num_rows(): " << x.num_rows() << std::endl;
-    std::cout << "Num parts: " << partitions << std::endl;
-    */
-
-    // create the initial offsets, each at least "levels" apart from each other
-    std::vector<size_t> offsets;
-    for (size_t i = 0; i < partitions; ++i)
-    {
-        offsets.push_back(i * levels);
-    }
-
     // Write the lambda to do the recursive calculation
-    std::function<double (size_t, size_t)> f = [&] (size_t const l_offset, size_t const l_level) -> double
+    // Sorry if the formatting is janky
+    std::function<double (size_t const, size_t const, size_t const)> f = 
+    [&] (size_t const start, size_t const size, size_t const remaining_levels) -> double
     {
-        assert(l_offset < x.num_rows());
-        assert(l_level >= 0);
-        // The base case: max recursion or end of the Vector
-        if (l_level < 1)
+        // base case: maximum level of recursion reached
+        // or size = 1
+        if (size == 1 || remaining_levels == 0)
         {
-            // min level of recursion
-            return x(l_offset) * x(l_offset);
+            double inner_sum = 0.0;
+            for (size_t i = start; i < start+size; ++i)
+            {
+                inner_sum += x(i) * x(i);
+            }
+            return inner_sum;
         }
-        else if(l_offset >= x.num_rows()-1)
-        {
-            // end of the Vector
-            return x(l_offset) * x(l_offset);
-        }
-        else
-        {
-            return (x(l_offset) * x(l_offset)) + f(l_offset+1, l_level-1);
-        }
+        // Otherwise, we need to go deeper (inception bwammmmmmmm)
+        // Split the sub-vector in Twain, and Mark the starts and ends
+        // Huck out the bad pun
+        size_t const l_size = size / 2;
+        size_t const r_size = (size / 2) + (size % 2);
+        std::future<double> left_split_val = std::async(f, 0, l_size, remaining_levels-1);
+        std::future<double> right_split_val = std::async(f, l_size, r_size, remaining_levels-1);
+
+        return left_split_val.get() + right_split_val.get();
     };
     
-    // Call std::async for creating multiple tasks
-    // a vector of futures of double...MOAR TEMPLATES
-    std::vector<std::future<double>> part_sum_futures;
-    for(size_t i = 0; i < partitions; ++i)
-    {
-        part_sum_futures.push_back(std::async(f, offsets[i], levels));
-        std::lock_guard<std::mutex> rnorm_guard(rnorm_mutex);
-        sum += part_sum_futures[i].get();
-    }
-
-    assert(partitions == part_sum_futures.size());
-    for(size_t i = 0; i < partitions; ++i)
-    {
-        //nada
-    }
-    
-    return std::sqrt(sum);
+    return std::sqrt(f(0, x.num_rows(), levels));
 }
 
 Vector abs(const Vector& x) {
