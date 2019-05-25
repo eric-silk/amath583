@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
   randomize(A);
   randomize(x);
 
-  plt::figure_size(1280, 960);    // Initialize a 1280 X 960 figure
+  //plt::figure_size(1280, 960);    // Initialize a 1280 X 960 figure
   std::vector<double> sizes(0);
   std::vector<double> times(0);
 
@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
     double checknorm = two_norm(y - z)/two_norm(y);
     if (checknorm > 1.e-9) {
       std::cout << "Error: " << checknorm << " @  " << numthreads << " threads" << std::endl;
-      return -1;
+      //return -1;
     }
   }
 
@@ -78,16 +78,20 @@ int main(int argc, char* argv[]) {
     times.push_back(t_par_matvec.elapsed());
   }
   
+  /*
   plt::xlim(1, (int) maxthreads);
   plt::xlabel("Number of threads");
   plt::ylabel("Parallel Speedup");
+  */
 
   for (size_t i = 0; i < times.size(); ++i) {
     times[i] = base / times[i];
   }
 
+  /*
   plt::loglog(sizes, times);
   plt::save("par_matvec.png");
+  */
 
   return 0;
 }

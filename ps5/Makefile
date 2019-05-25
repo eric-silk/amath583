@@ -11,7 +11,7 @@
 CXX             := c++
 
 # Maximum optimization effort: -O3 -march=native -DNDEBUG
-OPTS            := -O3 -march=native -DNDEBUG 
+OPTS            := -O3 -march=native# -DNDEBUG 
 #OPTS            := -O0 -g
 LANG            := -std=c++17
 PICKY           := -Wall

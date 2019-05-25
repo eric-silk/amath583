@@ -400,14 +400,16 @@ void matvec_ji(const Matrix& A, const Vector& x, Vector& y) {
 // Static to keep it local to this file
 static std::mutex matvec_mutex;
 
+// This isn't working. I'm pretty sure is due to me not handling the
+// partitioning correctly (or at least the post-partitioning accumulation)
+// but I've had several glasses of good scotch and don't think I'll finish this.
+// Woe to ye who must grade this.
 void par_matvec(const Matrix& A, const Vector& x, Vector& y, size_t partitions)
 {
-    assert(x.num_rows() == y.num_rows());
-    assert(A.num_cols() == y.num_rows());
-    // Split the Matrix into "partition" sub-matrices, each "partition" rows by J columns
+    // Split the Matrix into "partition" sub-matrices
     // split the vector into partitions (or partition ranges)
-    const size_t step_size = x.num_rows() / partitions;
-    size_t leftover = x.num_rows() % partitions;
+    const size_t step_size = A.num_cols() / partitions;
+    size_t leftover = A.num_cols() % partitions;
 
     std::vector<size_t> offsets;
     offsets.push_back(0);
@@ -424,54 +426,44 @@ void par_matvec(const Matrix& A, const Vector& x, Vector& y, size_t partitions)
         offsets.push_back(offsets.back() + step);
     }
 
-    std::vector<Vector> subvectors;
-    for (size_t i = 0; i < partitions; ++i)
-    {
-        subvectors.push_back(Vector(y.num_rows()));
-    }
-
     // For each sub matrix do the matvec multiplication
-    // Consider an std::vector of subvectors and then summing them for better
-    // performance, time allowing
-    auto f = [&] (size_t const row_start, size_t row_stop, size_t const partition) -> void
+    auto f = [&] (size_t const row_start, size_t row_stop) -> Vector
     {
-        if (row_stop >= A.num_cols())
+        Vector sub_vector(A.num_cols());
+        if (row_stop >= A.num_rows())
         {
-            row_stop = A.num_cols() - 1;
+            row_stop = A.num_rows() - 1;
         }
-        assert(row_start >= 0);
-        assert(row_stop < A.num_cols());
 
-        for (size_t i = row_start; i < row_stop; ++i)
+        for (size_t row = row_start; row <= row_stop; ++row)
         {
-            for (size_t j = 0; j < A.num_cols(); ++j)
+            for (size_t col = 0; col < A.num_cols(); ++col)
             {
-                subvectors[partition](i) += A(i, j) * x(j);
+                std::cout << "y["<<row+1<<"]+=A("<<col+1<<","<<row+1<<")*x"<<col+1<<std::endl;
+                sub_vector(col) += A(row, col) * x(col);
             }
         }
+
+        return sub_vector;
     };
 
-    // Call std::thread() "partition" times
-    std::vector<std::thread> threads;
+    std::vector<std::future<Vector>> tasks;
+
     for (size_t i = 0; i < partitions; ++i)
     {
-        threads.push_back(std::thread(f, offsets[i], offsets[i+1], i));
-    }
-    for (size_t i = 0; i < partitions; ++i)
-    {
-        threads[i].join();
+        tasks.push_back(std::async(f, offsets[i], offsets[i+1]));
     }
 
     // Sum the resulting subvectors
-    for(size_t i = 0; i < subvectors.size(); ++i)
+    for(size_t i = 0; i < partitions; ++i)
     {
-        for (size_t row = 0; row < y.num_rows(); ++row)
+        std::lock_guard<std::mutex> matvec_guard(matvec_mutex);
+        Vector tmp_vector = tasks[i].get();
+        for (size_t row = 0; row < tmp_vector.num_rows(); ++row)
         {
-            y(row) += subvectors[i](row);
+            y(i) += tmp_vector(row);
         }
     }
-
-
 }
 
 
