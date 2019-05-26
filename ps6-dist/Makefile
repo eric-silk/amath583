@@ -8,23 +8,27 @@
 # Author: Andrew Lumsdaine
 #
 
+#SPEEDUP		:=
+SPEEDUP	:= -DNCRITICAL
+
 CXX             := c++
 
 # Uncomment this to time CSR
 CSR		+= -DTIME_CSR
 
 # Uncomment this to time CSC
-#CSC		+= -DTIME_CSC
+CSC		+= -DTIME_CSC
 
 # Uncomment this to time COO
-#COO		+= -DTIME_COO
+COO		+= -DTIME_COO
 
 # Uncomment this to time AOS
-#AOS		+= -DTIME_AOS
+AOS		+= -DTIME_AOS
 
 
 # Maximum optimization effort: -O3 -march=native -DNDEBUG
 OPTS            := -Ofast -march=native -DNDEBUG 
+OPTS            := -O3 -march=native -DNDEBUG 
 LANG            := -std=c++17
 PICKY           := -Wall
 DIAG		:= # -Rpass=.*
@@ -45,7 +49,7 @@ ifeq ($(OS),Linux)
 endif
 
 
-CXXFLAGS	+= $(DEFS) $(OPTS) $(LANG) $(PICKY) $(INCLUDES) $(DIAG)
+CXXFLAGS	+= $(DEFS) $(OPTS) $(LANG) $(PICKY) $(INCLUDES) $(DIAG) $(SPEEDUP)
 
 TARGETS		:= matvec_scale.exe pagerank.exe csr_scale.exe norm_scale.exe csr_omp.exe deg_dist.exe mmio_to_bin.exe
 

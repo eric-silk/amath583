@@ -78,11 +78,16 @@ public:
 
 
   void omp_matvec(const Vector& x, Vector& y) const {
-    /* Parallelize me */
-    for (size_t i = 0; i < num_rows_; ++i) {
-      for (size_t j = row_indices_[i]; j < row_indices_[i+1]; ++j)  {
+    size_t i = 0;
+    size_t j = 0;
+#pragma omp parallel shared(y) private(i,j)
+    {
+#pragma omp for schedule(static)
+    for (i = 0; i < num_rows_; ++i) {
+      for (j = row_indices_[i]; j < row_indices_[i+1]; ++j)  {
 	y(i) += storage_[j] * x(col_indices_[j]);
       }
+    }
     }
   }
 

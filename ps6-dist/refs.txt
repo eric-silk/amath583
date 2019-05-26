@@ -1,0 +1,4 @@
+https://stackoverflow.com/questions/13224155/how-does-the-omp-ordered-clause-work
+https://www.appentra.com/parallel-computation-of-matrix-vector-product/
+https://stackoverflow.com/questions/13199398/openmp-predetermined-shared-for-shared
+https://stackoverflow.com/questions/17557677/openmp-parallelization-of-spmv-in-csc
