@@ -102,7 +102,7 @@ double norm_block_critical(const Vector& x) {
 #pragma omp parallel for ordered reduction(+:sum)
   for (size_t i = 0; i < x.num_rows(); ++i) {
 #ifndef NCRITICAL
-#pragma omp critical 
+#pragma omp atomic
 #endif
     sum += x(i) * x(i);
   }
@@ -125,7 +125,7 @@ double norm_cyclic_critical(const Vector& x) {
 #pragma omp parallel for schedule(static, 1) reduction(+:sum)
   for (size_t i = 0; i < x.num_rows(); ++i) {
 #ifndef NCRITICAL
-#pragma omp critical 
+#pragma omp atomic
 #endif
     sum += x(i) * x(i);
   }

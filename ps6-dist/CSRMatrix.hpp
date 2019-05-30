@@ -10,6 +10,8 @@
 #ifndef __CSRMATRIX_HPP
 #define __CSRMATRIX_HPP
 
+#include <fstream>
+
 #include "Vector.hpp"
 #include "Matrix.hpp"
 #include <algorithm>
@@ -93,11 +95,44 @@ public:
 
 
   void partition_by_nnz(size_t parts) {
-    /* Write me */
+    std::fstream stats_file;
+    stats_file.open("part_stats.csv", std::ios::out | std::ios::app);
+    assert(parts > 0);
+    num_partitions_ = parts;
+    size_t xsize = num_nonzeros() / parts;
+    size_t xrem = num_nonzeros() % parts;
+    partitions_.resize(parts+1);
+
+    // Need to split into roughly equal size portions...by rows
+    // For instance, if rows 0 and 1 have n elements each and row 1 has 2n
+    // elements, 0 and 1 would be in partition A and row 2 in partition B.
+    // Will pinch off a partition once the number of elements accumulated
+    // meets or exceeds the ideal size. At the last partition, just
+    // stuffs all remaining in.
+    size_t total = 0;
+    size_t running_total = 0;
+    size_t partition_count = 0;
+    stats_file << "\nNumber of elements per partition,";
+    for (size_t i = 0; i < row_indices_.size()-2; ++i) {
+      size_t num_nonzeros_in_row = row_indices_[i+1]-row_indices_[i];
+      total += num_nonzeros_in_row;
+      if (total >= xsize+xrem) {
+        // we've accumulated enough for this partition
+        assert(partition_count < partitions_.size() - 1);
+        partitions_[partition_count] = i;
+        stats_file << total << ",";
+        running_total += total;
+        total = 0;
+        if (xrem > 0) { --xrem; }
+      }
+    }
+    partitions_[partitions_.size()-1] = row_indices_.size()-1;
+    // TODO: add an appropriate assert to validate total number of nonzero
+    // elements is correct
+    stats_file.close();
   }
 
   void partition_by_row(size_t parts) {
-
     num_partitions_ = parts;
     size_t xsize = num_rows_ / parts;
     size_t xrem = num_rows_ % parts;

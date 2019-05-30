@@ -104,8 +104,7 @@ int main(int argc, char* argv[]) {
   std::vector<double> flops(0);
 
   plt::figure_size(1280, 960);  // Initialize a 1280 X 960 figure
-
-
+#if 0
   std::cout << "================================================================" << std::endl;
   std::cout << "  Compressed sparse row matrix by row" << std::endl;
 
@@ -115,7 +114,7 @@ int main(int argc, char* argv[]) {
      sizes, flops, maxthreads, input_file);
 
   plt::named_loglog("CSR by row", sizes, flops);
-
+#endif
 
   std::cout << "================================================================" << std::endl;
   std::cout << "  Compressed sparse row matrix by nnz" << std::endl;
