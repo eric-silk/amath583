@@ -12,9 +12,12 @@
 #include <string>
 #include <vector>
 
+#include <iostream>
+
 #include "omp.h"
 
-Vector pagerank(const CSRMatrix& P, double alpha, double tol = 1.e-6, size_t max_iters = 8192) {
+#if 0
+Vector pagerank_old(const CSRMatrix& P, double alpha, double tol = 1.e-6, size_t max_iters = 8192) {
 
   Vector x(P.num_rows());
   randomize(x);
@@ -23,7 +26,38 @@ Vector pagerank(const CSRMatrix& P, double alpha, double tol = 1.e-6, size_t max
   for (size_t i = 0; i < max_iters; ++i) {
     Vector y = alpha * (P * x) + (1.0 - alpha) / x.num_rows();
 
+    std::cout << (two_norm(x - y)) << "," <<  tol << "\n";
     if (two_norm(x - y) < tol) {
+      std::cout << "Converged in " << i << " iterations" << std::endl;
+      return y;
+    }
+    x = y;
+  }
+  return x;
+}
+#endif
+
+Vector pagerank(const CSRMatrix& P, double const alpha, double const tol = 1.e-6, size_t const max_iters = 8192) {
+  Vector x(P.num_rows());
+  Vector y(P.num_rows());
+  randomize(x);
+  x = (1.0 / one_norm(x)) * x;
+
+  for (size_t i = 0; i < max_iters; ++i) {
+    // So I'm not sure exactly why, but...calling omp_matvec here for the CSR matrix
+    // seemed to cause the solution to diverge.
+    // I even tried both (x,y) and (y,x) to no avail.
+    // Changing the operator overload to call it DOES work.
+    // See amath583sparse.cpp for this change.
+    y = P*x;
+    size_t j;
+#pragma omp parallel for shared(y) private(j) schedule(auto)
+    for (j = 0; j < y.num_rows(); ++j)
+    {
+      y(j) = alpha * y(j);
+      y(j) = y(j) + (1.0 - alpha) / x.num_rows();
+    }
+    if (two_norm_omp(x - y) < tol) {
       std::cout << "Converged in " << i << " iterations" << std::endl;
       return y;
     }

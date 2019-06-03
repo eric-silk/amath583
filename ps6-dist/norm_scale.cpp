@@ -101,9 +101,17 @@ double norm_block_critical(const Vector& x) {
   /* Fix Me */
 #pragma omp parallel for ordered reduction(+:sum)
   for (size_t i = 0; i < x.num_rows(); ++i) {
-#ifndef NCRITICAL
+#pragma omp critical
+    sum += x(i) * x(i);
+  }
+  return std::sqrt(sum);
+}
+double norm_block_atomic(const Vector& x) {
+  double sum = 0;
+  /* Fix Me */
+#pragma omp parallel for ordered reduction(+:sum)
+  for (size_t i = 0; i < x.num_rows(); ++i) {
 #pragma omp atomic
-#endif
     sum += x(i) * x(i);
   }
   return std::sqrt(sum);
@@ -124,9 +132,18 @@ double norm_cyclic_critical(const Vector& x) {
   /* Fix Me */
 #pragma omp parallel for schedule(static, 1) reduction(+:sum)
   for (size_t i = 0; i < x.num_rows(); ++i) {
-#ifndef NCRITICAL
+#pragma omp critical
+    sum += x(i) * x(i);
+  }
+  return std::sqrt(sum);
+}
+
+double norm_cyclic_atomic(const Vector& x) {
+  double sum = 0;
+  /* Fix Me */
+#pragma omp parallel for schedule(static, 1) reduction(+:sum)
+  for (size_t i = 0; i < x.num_rows(); ++i) {
 #pragma omp atomic
-#endif
     sum += x(i) * x(i);
   }
   return std::sqrt(sum);
@@ -198,6 +215,12 @@ int main(int argc, char* argv[]) {
   plt::named_loglog("Block critical", sizes, flops);
 
   std::cout << "================================================================" << std::endl;
+  std::cout << "  Block atomic " << std::endl;
+
+  norm_bench (norm_block_atomic, sizes, flops, size, maxthreads, scaling);
+  plt::named_loglog("Block atomic", sizes, flops);
+
+  std::cout << "================================================================" << std::endl;
   std::cout << "  Cyclic reduction " << std::endl;
   
   norm_bench (norm_cyclic_reduction, sizes, flops, size, maxthreads, scaling);
@@ -208,6 +231,12 @@ int main(int argc, char* argv[]) {
 
   norm_bench (norm_cyclic_critical, sizes, flops, size, maxthreads, scaling);
   plt::named_loglog("Cyclic critical", sizes, flops);
+
+  std::cout << "================================================================" << std::endl;
+  std::cout << "  Cyclic atomic " << std::endl;
+
+  norm_bench (norm_cyclic_atomic, sizes, flops, size, maxthreads, scaling);
+  plt::named_loglog("Cyclic atomic", sizes, flops);
 
   plt::xlim(1, (int) maxthreads);
   plt::xlabel("Threads");

@@ -15,6 +15,8 @@
 #include <cmath>
 #include <functional>
 #include <random>
+#include <iostream>
+#include "omp.h"
 
 // ----------------------------------------------------------------
 //
@@ -46,6 +48,15 @@ double one_norm(const Vector& x) {
 
 double two_norm(const Vector& x) {
   double sum = 0.0;
+  for (size_t i = 0; i < x.num_rows(); ++i) {
+    sum += x(i) * x(i);
+  }
+  return std::sqrt(sum);
+}
+
+double two_norm_omp(const Vector& x) {
+  double sum = 0.0;
+#pragma omp parallel for reduction(+:sum)
   for (size_t i = 0; i < x.num_rows(); ++i) {
     sum += x(i) * x(i);
   }
@@ -207,7 +218,8 @@ Vector operator*(const Matrix& A, const Vector& x) {
   assert(A.num_cols() == x.num_rows());
 
   Vector y(A.num_rows());
-  matvec(A, x, y);
+  //matvec(A, x, y);
+  matvec_omp(A, x, y);
   return y;
 }
 
@@ -232,6 +244,26 @@ void matvec_ji(const Matrix& A, const Vector& x, Vector& y) {
     for (size_t i = 0; i < A.num_rows(); ++i) {
       y(i) += A(i, j) * x(j);
     }
+  }
+}
+
+void matvec_omp(const Matrix& A, const Vector& x, Vector& y) {
+  std::cout << "Entered matvec_omp" << std::endl;
+  size_t matsize = A.num_rows() * A.num_cols();
+  Vector result_private(matsize);
+  size_t j, i;
+  for (j = 0; j < matsize; ++j)
+  {
+#pragma omp parallel for
+    for(i = 0; i < matsize; ++i)
+    {
+      result_private(j) += A(i, j) * x(i);
+    }
+  }
+
+#pragma omp critical
+  {
+    for(j = 0; j < matsize; ++j) y(j) += result_private(j);
   }
 }
 

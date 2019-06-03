@@ -1,0 +1,417 @@
+=== Testing make clean ===
+/bin/rm -f matvec_scale.exe pagerank.exe csr_scale.exe norm_scale.exe csr_omp.exe deg_dist.exe mmio_to_bin.exe matvec_scale.o pagerank.o csr_scale.o norm_scale.o csr_omp.o deg_dist.o mmio_to_bin.o amath583.o amath583IO.o amath583sparse.o matvec_scale.hpp.gch pagerank.hpp.gch csr_scale.hpp.gch norm_scale.hpp.gch csr_omp.hpp.gch deg_dist.hpp.gch mmio_to_bin.hpp.gch amath583.hpp.gch amath583IO.hpp.gch amath583sparse.hpp.gch Matrix.s a.out *~ Makefile.bak
++++ make clean Passed +++
+=== Testing make norm_scale.exe ===
+c++ -c -Xpreprocessor -fopenmp -DTIME_COO -DTIME_CSR -DTIME_CSC -DTIME_AOS -Ofast -march=native -DNDEBUG  -std=c++17 -Wall -I../include  -I/usr/include/python2.7  -DNCRITICAL norm_scale.cpp -o norm_scale.o
+c++ -c -Xpreprocessor -fopenmp -DTIME_COO -DTIME_CSR -DTIME_CSC -DTIME_AOS -Ofast -march=native -DNDEBUG  -std=c++17 -Wall -I../include  -I/usr/include/python2.7  -DNCRITICAL amath583.cpp -o amath583.o
+c++ -Xpreprocessor -fopenmp -DTIME_COO -DTIME_CSR -DTIME_CSC -DTIME_AOS -Ofast -march=native -DNDEBUG  -std=c++17 -Wall -I../include  -I/usr/include/python2.7  -DNCRITICAL norm_scale.o amath583.o -o norm_scale.exe -L/usr/lib/python2.7/config-x86_64-linux-gnu -lpython2.7 -lpthread -lomp  -lpthread
++++ make norm_scale.exe Passed +++
+=== Testing ./norm_scale.exe -N 5000 ===
+================================================================
+  Sequential 
+N	trips	total	avg	Gflops
+1	107378	1.33174e-06	1.24024e-11	7.50895	5000	4.39718e+06
+================================================================
+  Parallel For 
+N	trips	total	avg	Gflops
+1	107378	1.53663e-06	1.43105e-11	6.50776	5000	4.35557e+06
+2	107378	1.42487e-06	1.32697e-11	7.01817	5000	4.33989e+06
+4	107378	2.23509e-06	2.08152e-11	4.47408	5000	4.33489e+06
+8	107378	2.66349e-06	2.48048e-11	3.75448	5000	4.37461e+06
+16	107378	4.13493e-06	3.85081e-11	2.41842	5000	4.36927e+06
+================================================================
+  Block reduction 
+N	trips	total	avg	Gflops
+1	107378	1.58319e-06	1.47441e-11	6.31635	5000	4.39334e+06
+2	107378	2.86837e-06	2.67128e-11	3.4863	5000	4.36033e+06
+4	107378	3.30608e-06	3.07892e-11	3.02473	5000	4.39898e+06
+8	107378	4.23737e-06	3.94622e-11	2.35996	5000	4.4105e+06
+16	107378	6.31414e-06	5.88029e-11	1.58375	5000	4.35873e+06
+================================================================
+  Block critical 
+N	trips	total	avg	Gflops
+1	107378	1.58319e-06	1.47441e-11	6.31635	5000	4.3289e+06
+2	107378	2.79387e-06	2.6019e-11	3.57927	5000	4.44115e+06
+4	107378	3.24089e-06	3.0182e-11	3.08557	5000	4.39838e+06
+8	107378	3.88348e-06	3.61664e-11	2.57501	5000	4.34444e+06
+16	107378	5.2711e-06	4.90892e-11	1.89714	5000	4.39551e+06
+================================================================
+  Cyclic reduction 
+N	trips	total	avg	Gflops
+1	107378	5.46667e-06	5.09105e-11	1.82927	5000	4.38913e+06
+2	107378	4.16286e-06	3.87683e-11	2.40219	5000	4.41775e+06
+4	107378	3.07326e-06	2.86209e-11	3.25388	5000	4.39724e+06
+8	107378	2.99875e-06	2.79271e-11	3.33472	5000	4.37295e+06
+16	107378	4.35843e-06	4.05896e-11	2.2944	5000	4.37212e+06
+================================================================
+  Cyclic critical 
+N	trips	total	avg	Gflops
+1	107378	5.41079e-06	5.03901e-11	1.84816	5000	4.4304e+06
+2	107378	3.31539e-06	3.08759e-11	3.01624	5000	4.40199e+06
+4	107378	2.95219e-06	2.74934e-11	3.38732	5000	4.34717e+06
+8	107378	3.20364e-06	2.98351e-11	3.12145	5000	4.39648e+06
+16	107378	4.405e-06	4.10233e-11	2.27015	5000	4.34175e+06
++++ ./norm_scale.exe -N 5000 Passed +++
+=== Testing ./norm_scale.exe -N 50000000 ===
+================================================================
+  Sequential 
+N	trips	total	avg	Gflops
+1	14	0.0378571	0.00270408	2.64151	50000000	65317.4
+================================================================
+  Parallel For 
+N	trips	total	avg	Gflops
+1	14	0.0392857	0.00280612	2.54545	50000000	65317.9
+2	14	0.0279286	0.0019949	3.58056	50000000	65318.5
+4	14	0.0128571	0.000918367	7.77778	50000000	65322.9
+8	14	0.0103571	0.000739796	9.65517	50000000	65322.7
+16	14	0.00785714	0.000561224	12.7273	50000000	65317.5
+================================================================
+  Block reduction 
+N	trips	total	avg	Gflops
+1	14	0.0343571	0.00245408	2.9106	50000000	65315.7
+2	14	0.0212857	0.00152041	4.69799	50000000	65317
+4	14	0.0126429	0.000903061	7.9096	50000000	65313.6
+8	14	0.0294286	0.00210204	3.39806	50000000	65321.1
+16	14	0.00785714	0.000561224	12.7273	50000000	65328
+================================================================
+  Block critical 
+N	trips	total	avg	Gflops
+1	14	0.0347857	0.00248469	2.87474	50000000	65315.8
+2	14	0.0213571	0.00152551	4.68227	50000000	65320.8
+4	14	0.0112143	0.00080102	8.9172	50000000	65325
+8	14	0.00857143	0.000612245	11.6667	50000000	65320.6
+16	14	0.00964286	0.000688776	10.3704	50000000	65319.3
+================================================================
+  Cyclic reduction 
+N	trips	total	avg	Gflops
+1	14	0.064	0.00457143	1.5625	50000000	65322.4
+2	14	0.0441429	0.00315306	2.26537	50000000	65322.8
+4	14	0.0471429	0.00336735	2.12121	50000000	65322.8
+8	14	0.0421429	0.0030102	2.37288	50000000	65311.2
+16	14	0.035	0.0025	2.85714	50000000	65320.3
+================================================================
+  Cyclic critical 
+N	trips	total	avg	Gflops
+1	14	0.0625	0.00446429	1.6	50000000	65313.8
+2	14	0.0376429	0.00268878	2.65655	50000000	65323.1
+4	14	0.0409286	0.00292347	2.44328	50000000	65317
+8	14	0.0530714	0.00379082	1.88425	50000000	65324.8
+16	14	0.0387857	0.00277041	2.57827	50000000	65316
++++ ./norm_scale.exe -N 50000000 Passed +++
+=== Testing ./norm_scale.exe -N 500000 -s strong ===
+================================================================
+  Sequential 
+N	trips	total	avg	Gflops
+1	1077	0.000174559	1.62079e-07	5.72872	500000	440183
+================================================================
+  Parallel For 
+N	trips	total	avg	Gflops
+1	1077	0.000189415	1.75873e-07	5.27941	500000	440331
+2	1077	9.09935e-05	8.44879e-08	10.9898	500000	439969
+4	1077	6.22098e-05	5.77622e-08	16.0746	500000	440655
+8	1077	3.43547e-05	3.18985e-08	29.1081	500000	440511
+16	1077	2.22841e-05	2.06909e-08	44.875	500000	440407
+================================================================
+  Block reduction 
+N	trips	total	avg	Gflops
+1	1077	0.000216342	2.00874e-07	4.62232	500000	440676
+2	1077	9.47075e-05	8.79364e-08	10.5588	500000	440389
+4	1077	6.40669e-05	5.94864e-08	15.6087	500000	440703
+8	1077	3.80687e-05	3.5347e-08	26.2683	500000	440036
+16	1077	5.01393e-05	4.65546e-08	19.9444	500000	440576
+================================================================
+  Block critical 
+N	trips	total	avg	Gflops
+1	1077	0.000215413	2.00012e-07	4.64224	500000	440372
+2	1077	9.65645e-05	8.96607e-08	10.3558	500000	440503
+4	1077	6.59239e-05	6.12106e-08	15.169	500000	440420
+8	1077	3.80687e-05	3.5347e-08	26.2683	500000	440193
+16	1077	2.87837e-05	2.67258e-08	34.7419	500000	440194
+================================================================
+  Cyclic reduction 
+N	trips	total	avg	Gflops
+1	1077	0.000530176	4.92272e-07	1.88616	500000	440496
+2	1077	0.000265552	2.46567e-07	3.76573	500000	440496
+4	1077	0.000159703	1.48285e-07	6.26163	500000	440384
+8	1077	0.000147632	1.37077e-07	6.77358	500000	440373
+16	1077	0.000140204	1.3018e-07	7.13245	500000	440859
+================================================================
+  Cyclic critical 
+N	trips	total	avg	Gflops
+1	1077	0.000523677	4.86237e-07	1.90957	500000	440594
+2	1077	0.000266481	2.47429e-07	3.75261	500000	440229
+4	1077	0.000169916	1.57768e-07	5.88525	500000	440769
+8	1077	0.000144847	1.34491e-07	6.90385	500000	440290
+16	1077	0.000142061	1.31905e-07	7.03922	500000	440377
++++ ./norm_scale.exe -N 500000 -s strong Passed +++
+=== Testing ./norm_scale.exe -N 500000 -s weak ===
+================================================================
+  Sequential 
+N	trips	total	avg	Gflops
+1	1077	0.00017363	1.61217e-07	5.75936	500000	440183
+================================================================
+  Parallel For 
+N	trips	total	avg	Gflops
+1	1077	0.00017363	1.61217e-07	5.75936	500000	440331
+2	540	0.000175926	3.25789e-07	11.3684	1000000	312791
+4	272	0.000176471	6.48789e-07	22.6667	2000000	223718
+8	138	0.000471014	3.41315e-06	16.9846	4000000	161612
+16	71	0.000943662	1.3291e-05	16.9552	8000000	119200
+================================================================
+  Block reduction 
+N	trips	total	avg	Gflops
+1	1077	0.00017363	1.61217e-07	5.75936	500000	440558
+2	540	0.000175926	3.25789e-07	11.3684	1000000	312860
+4	272	0.0001875	6.89338e-07	21.3333	2000000	223717
+8	138	0.000376812	2.73052e-06	21.2308	4000000	161613
+16	71	0.00119718	1.68617e-05	13.3647	8000000	119203
+================================================================
+  Block critical 
+N	trips	total	avg	Gflops
+1	1077	0.000174559	1.62079e-07	5.72872	500000	440190
+2	540	0.000177778	3.29218e-07	11.25	1000000	312889
+4	272	0.000176471	6.48789e-07	22.6667	2000000	223706
+8	138	0.000326087	2.36295e-06	24.5333	4000000	161692
+16	71	0.00143662	2.02341e-05	11.1373	8000000	119242
+================================================================
+  Cyclic reduction 
+N	trips	total	avg	Gflops
+1	1077	0.000522748	4.85375e-07	1.91297	500000	440824
+2	540	0.000525926	9.73937e-07	3.80282	1000000	312700
+4	272	0.0006875	2.52757e-06	5.81818	2000000	223814
+8	138	0.00297826	2.15816e-05	2.68613	4000000	161612
+16	71	0.00784507	0.000110494	2.0395	8000000	119215
+================================================================
+  Cyclic critical 
+N	trips	total	avg	Gflops
+1	1077	0.000522748	4.85375e-07	1.91297	500000	440188
+2	540	0.000535185	9.91084e-07	3.73702	1000000	313225
+4	272	0.000720588	2.64922e-06	5.55102	2000000	223706
+8	138	0.00326812	2.3682e-05	2.44789	4000000	161635
+16	71	0.005	7.04225e-05	3.2	8000000	119183
++++ ./norm_scale.exe -N 500000 -s weak Passed +++
+=== Testing make clean ===
+/bin/rm -f matvec_scale.exe pagerank.exe csr_scale.exe norm_scale.exe csr_omp.exe deg_dist.exe mmio_to_bin.exe matvec_scale.o pagerank.o csr_scale.o norm_scale.o csr_omp.o deg_dist.o mmio_to_bin.o amath583.o amath583IO.o amath583sparse.o matvec_scale.hpp.gch pagerank.hpp.gch csr_scale.hpp.gch norm_scale.hpp.gch csr_omp.hpp.gch deg_dist.hpp.gch mmio_to_bin.hpp.gch amath583.hpp.gch amath583IO.hpp.gch amath583sparse.hpp.gch Matrix.s a.out *~ Makefile.bak
++++ make clean Passed +++
+=== Testing make matvec_scale.exe ===
+c++ -c -Xpreprocessor -fopenmp -DTIME_COO -DTIME_CSR -DTIME_CSC -DTIME_AOS -Ofast -march=native -DNDEBUG  -std=c++17 -Wall -I../include  -I/usr/include/python2.7  -DNCRITICAL matvec_scale.cpp -o matvec_scale.o
+c++ -c -Xpreprocessor -fopenmp -DTIME_COO -DTIME_CSR -DTIME_CSC -DTIME_AOS -Ofast -march=native -DNDEBUG  -std=c++17 -Wall -I../include  -I/usr/include/python2.7  -DNCRITICAL amath583.cpp -o amath583.o
+c++ -c -Xpreprocessor -fopenmp -DTIME_COO -DTIME_CSR -DTIME_CSC -DTIME_AOS -Ofast -march=native -DNDEBUG  -std=c++17 -Wall -I../include  -I/usr/include/python2.7  -DNCRITICAL amath583IO.cpp -o amath583IO.o
+c++ -c -Xpreprocessor -fopenmp -DTIME_COO -DTIME_CSR -DTIME_CSC -DTIME_AOS -Ofast -march=native -DNDEBUG  -std=c++17 -Wall -I../include  -I/usr/include/python2.7  -DNCRITICAL amath583sparse.cpp -o amath583sparse.o
+c++ -Xpreprocessor -fopenmp -DTIME_COO -DTIME_CSR -DTIME_CSC -DTIME_AOS -Ofast -march=native -DNDEBUG  -std=c++17 -Wall -I../include  -I/usr/include/python2.7  -DNCRITICAL matvec_scale.o amath583.o amath583IO.o amath583sparse.o -o matvec_scale.exe -L/usr/lib/python2.7/config-x86_64-linux-gnu -lpython2.7 -lpthread -lomp  -lpthread
++++ make matvec_scale.exe Passed +++
+=== Testing ./matvec_scale.exe -N 1000 ===
+================================================================
+  Coordinate sparse matrix 
+N	trips	total	        avg	        Gflops
+1	114695	7.21915e-06	6.29421e-11	1.29683	1000
+2	114695	4.9697e-06	4.33297e-11	1.88382	1000
+4	114695	3.89729e-06	3.39796e-11	2.40218	1000
+8	114695	3.87114e-06	3.37516e-11	2.41841	1000
+16	114695	3.40904e-06	2.97227e-11	2.74623	1000
+================================================================
+  Compressed sparse row matrix 
+N	trips	total	        avg	        Gflops
+1	114695	6.61755e-06	5.76969e-11	1.41472	1000
+2	114695	5.19639e-06	4.53062e-11	1.80164	1000
+4	114695	4.57736e-06	3.9909e-11	2.04528	1000
+8	114695	4.02807e-06	3.51199e-11	2.32419	1000
+16	114695	3.42648e-06	2.98747e-11	2.73225	1000
+================================================================
+  Compressed sparse column matrix 
+N	trips	total	        avg	        Gflops
+1	114695	4.22512e-05	3.68379e-10	0.22158	        1000
+2	114695	2.31483e-05	2.01825e-10	0.404435	1000
+4	114695	1.43947e-05	1.25504e-10	0.650378	1000
+8	114695	1.48132e-05	1.29153e-10	0.632004	1000
+16	114695	1.88674e-05	1.64501e-10	0.496199	1000
+================================================================
+  Array of structs matrix 
+N	trips	total	        avg	        Gflops
+1	114695	7.51558e-06	6.55267e-11	1.24568	1000
+2	114695	5.04817e-06	4.40139e-11	1.85453	1000
+4	114695	3.53982e-06	3.08629e-11	2.64477	1000
+8	114695	3.28698e-06	2.86584e-11	2.84821	1000
+16	114695	3.87986e-06	3.38276e-11	2.41298	1000
++++ ./matvec_scale.exe -N 1000 Passed +++
+=== Testing ./matvec_scale.exe -N 10000000 ===
+================================================================
+  Coordinate sparse matrix 
+N	trips	total	        avg	        Gflops
+1	14	0.173	        0.0123571	0.577787	10000000
+2	14	0.0768571	0.0054898	1.30056	        10000000
+4	14	0.0433571	0.00309694	2.30544	        10000000
+8	14	0.0365	        0.00260714	2.73855	        10000000
+16	14	0.0718571	0.00513265	1.39105	        10000000
+================================================================
+  Compressed sparse row matrix 
+N	trips	total	        avg	        Gflops
+1	14	0.108071	0.00771939	0.924917	10000000
+2	14	0.0722857	0.00516327	1.38281	        10000000
+4	14	0.0334286	0.00238776	2.99017	        10000000
+8	14	0.0292143	0.00208673	3.42152	        10000000
+16	14	0.0282857	0.00202041	3.53384	        10000000
+================================================================
+  Compressed sparse column matrix 
+N	trips	total	        avg	        Gflops
+1	14	0.580857	0.0414898	0.172086	10000000
+2	14	0.304714	0.0217653	0.328036	10000000
+4	14	0.154	        0.011	        0.649072	10000000
+8	14	0.0767857	0.00548469	1.30177	        10000000
+16	14	0.0558571	0.0039898	1.78951	        10000000
+================================================================
+  Array of structs matrix 
+N	trips	total	        avg	        Gflops
+1	14	0.1505	        0.01075	        0.664167 10000000
+2	14	0.0905	        0.00646429	1.1045	 10000000
+4	14	0.0987143	0.00705102	1.01259	 10000000
+8	14	0.0285714	0.00204082	3.4985	 10000000
+16	14	0.0236429	0.00168878	4.22779	 10000000
++++ ./matvec_scale.exe -N 10000000 Passed +++
+=== Testing ./matvec_scale.exe -N 100000 -s strong ===
+================================================================
+  Coordinate sparse matrix 
+N	trips	total	        avg	        Gflops
+1	1082	0.000829945	7.67047e-07	1.20012	100000
+2	1082	0.000406654	3.75836e-07	2.44933	100000
+4	1082	0.000210721	1.94751e-07	4.72678	100000
+8	1082	0.000120148	1.11042e-07	8.29005	100000
+16	1082	9.24214e-05	8.54172e-08	10.7771	100000
+================================================================
+  Compressed sparse row matrix 
+N	trips	total	        avg	        Gflops
+1	1082	0.000680222	6.28671e-07	1.46428	100000
+2	1082	0.000342884	3.16898e-07	2.90487	100000
+4	1082	0.000172828	1.5973e-07	5.76314	100000
+8	1082	8.78004e-05	8.11464e-08	11.3443	100000
+16	1082	7.85582e-05	7.26046e-08	12.6789	100000
+================================================================
+  Compressed sparse column matrix 
+N	trips	total	        avg	        Gflops
+1	1082	0.00449908	4.15811e-06	0.221386	100000
+2	1082	0.00226987	2.09785e-06	0.438806	100000
+4	1082	0.00113771	1.05149e-06	0.875472	100000
+8	1082	0.000592421	5.47524e-07	1.68129	        100000
+16	1082	0.000498152	4.60399e-07	1.99946	        100000
+================================================================
+  Array of structs matrix 
+N	trips	total	        avg	        Gflops
+1	1082	0.000879852	8.13172e-07	1.13204	100000
+2	1082	0.000439926	4.06586e-07	2.26409	100000
+4	1082	0.000237523	2.19522e-07	4.19341	100000
+8	1082	0.000109982	1.01647e-07	9.05636	100000
+16	1082	9.61183e-05	8.88339e-08	10.3626	100000
++++ ./matvec_scale.exe -N 100000 -s strong Passed +++
+=== Testing ./matvec_scale.exe -N 100000 -s weak ===
+================================================================
+  Coordinate sparse matrix 
+N	trips	total	        avg	        Gflops
+1	1082	0.000823475	7.61068e-07	1.20955	100000
+2	542	0.000944649	1.7429e-06	2.11138	200000
+4	273	0.00136996	5.01818e-06	2.91189	400000
+8	138	0.00267391	1.93762e-05	2.98634	800000
+16	71	0.00690141	9.72029e-05	2.31356	1600000
+================================================================
+  Compressed sparse row matrix 
+N	trips	total	        avg	        Gflops
+1	1082	0.000697782	6.449e-07	1.42743	100000
+2	542	0.000750923	1.38547e-06	2.65608	200000
+4	273	0.000835165	3.05921e-06	4.77652	400000
+8	138	0.0019058	1.38101e-05	4.18996	800000
+16	71	0.00515493	7.26046e-05	3.09739	1600000
+================================================================
+  Compressed sparse column matrix 
+N	trips	total	        avg	        Gflops
+1	1082	0.00451109	4.16921e-06	0.220796	100000
+2	542	0.00484502	8.93915e-06	0.411663	200000
+4	273	0.00472161	1.72953e-05	0.844878	400000
+8	138	0.00483333	3.50242e-05	1.65211	        800000
+16	71	0.00819718	0.000115453	1.94785	        1600000
+================================================================
+  Array of structs matrix 
+N	trips	total	        avg	        Gflops
+1	1082	0.000878928	8.12318e-07	1.13324	100000
+2	542	0.000953875	1.75992e-06	2.09096	200000
+4	273	0.00143223	5.24628e-06	2.78529	400000
+8	138	0.00295652	2.14241e-05	2.70088	800000
+16	71	0.00525352	7.39933e-05	3.03927	1600000
++++ ./matvec_scale.exe -N 100000 -s weak Passed +++
+=== Testing make clean ===
+/bin/rm -f matvec_scale.exe pagerank.exe csr_scale.exe norm_scale.exe csr_omp.exe deg_dist.exe mmio_to_bin.exe matvec_scale.o pagerank.o csr_scale.o norm_scale.o csr_omp.o deg_dist.o mmio_to_bin.o amath583.o amath583IO.o amath583sparse.o matvec_scale.hpp.gch pagerank.hpp.gch csr_scale.hpp.gch norm_scale.hpp.gch csr_omp.hpp.gch deg_dist.hpp.gch mmio_to_bin.hpp.gch amath583.hpp.gch amath583IO.hpp.gch amath583sparse.hpp.gch Matrix.s a.out *~ Makefile.bak
++++ make clean Passed +++
+=== Testing make csr_omp.exe ===
+c++ -c -Xpreprocessor -fopenmp -DTIME_COO -DTIME_CSR -DTIME_CSC -DTIME_AOS -Ofast -march=native -DNDEBUG  -std=c++17 -Wall -I../include  -I/usr/include/python2.7  -DNCRITICAL csr_omp.cpp -o csr_omp.o
+c++ -c -Xpreprocessor -fopenmp -DTIME_COO -DTIME_CSR -DTIME_CSC -DTIME_AOS -Ofast -march=native -DNDEBUG  -std=c++17 -Wall -I../include  -I/usr/include/python2.7  -DNCRITICAL amath583.cpp -o amath583.o
+c++ -c -Xpreprocessor -fopenmp -DTIME_COO -DTIME_CSR -DTIME_CSC -DTIME_AOS -Ofast -march=native -DNDEBUG  -std=c++17 -Wall -I../include  -I/usr/include/python2.7  -DNCRITICAL amath583IO.cpp -o amath583IO.o
+c++ -Xpreprocessor -fopenmp -DTIME_COO -DTIME_CSR -DTIME_CSC -DTIME_AOS -Ofast -march=native -DNDEBUG  -std=c++17 -Wall -I../include  -I/usr/include/python2.7  -DNCRITICAL csr_omp.o amath583.o amath583IO.o -o csr_omp.exe -L/usr/lib/python2.7/config-x86_64-linux-gnu -lpython2.7 -lpthread -lomp  -lpthread
++++ make csr_omp.exe Passed +++
+=== Testing ./csr_omp.exe -i cit-Patents.mmio ===
+================================================================
+  Compressed sparse row OMP static scheduling
+N	trips	total	        avg	        Gflops
+1	6	0.353667	0.0589444	0.0934153	3774768
+2	6	0.266833	0.0444722	0.123815	3774768
+4	6	0.167833	0.0279722	0.196849	3774768
+8	6	0.0733333	0.0122222	0.450517	3774768
+16	6	0.0781667	0.0130278	0.42266	        3774768
+================================================================
+  Compressed sparse row OMP dynamic scheduling
+N	trips	total	        avg	        Gflops
+1	6	0.287167	0.0478611	0.115048	3774768
+2	6	0.243667	0.0406111	0.135586	3774768
+4	6	0.153333	0.0255556	0.215465	3774768
+8	6	0.114333	0.0190556	0.288961	3774768
+16	6	0.048	        0.008       	0.688289	3774768
+================================================================
+  Compressed sparse row OMP guided scheduling
+N	trips	total	        avg	        Gflops
+1	6	0.266833	0.0444722	0.123815	3774768
+2	6	0.259667	0.0432778	0.127232	3774768
+4	6	0.138	        0.023	        0.239405	3774768
+8	6	0.0706667	0.0117778	0.467517	3774768
+16	6	0.04	        0.00666667	0.825947	3774768
+================================================================
+  Compressed sparse row OMP auto scheduling
+N	trips	total	avg	Gflops
+1	6	0.269333	0.0448889	0.122665	3774768
+2	6	0.236167	0.0393611	0.139892	3774768
+4	6	0.147667	0.0246111	0.223733	3774768
+8	6	0.0705	0.01175	0.468623	3774768
+16	6	0.072	0.012	0.45886	3774768
++++ ./csr_omp.exe -i cit-Patents.mmio Passed +++
+=== Testing make clean ===
+/bin/rm -f matvec_scale.exe pagerank.exe csr_scale.exe norm_scale.exe csr_omp.exe deg_dist.exe mmio_to_bin.exe matvec_scale.o pagerank.o csr_scale.o norm_scale.o csr_omp.o deg_dist.o mmio_to_bin.o amath583.o amath583IO.o amath583sparse.o matvec_scale.hpp.gch pagerank.hpp.gch csr_scale.hpp.gch norm_scale.hpp.gch csr_omp.hpp.gch deg_dist.hpp.gch mmio_to_bin.hpp.gch amath583.hpp.gch amath583IO.hpp.gch amath583sparse.hpp.gch Matrix.s a.out *~ Makefile.bak
++++ make clean Passed +++
+=== Testing make csr_scale.exe ===
+c++ -c -Xpreprocessor -fopenmp -DTIME_COO -DTIME_CSR -DTIME_CSC -DTIME_AOS -Ofast -march=native -DNDEBUG  -std=c++17 -Wall -I../include  -I/usr/include/python2.7  -DNCRITICAL csr_scale.cpp -o csr_scale.o
+c++ -c -Xpreprocessor -fopenmp -DTIME_COO -DTIME_CSR -DTIME_CSC -DTIME_AOS -Ofast -march=native -DNDEBUG  -std=c++17 -Wall -I../include  -I/usr/include/python2.7  -DNCRITICAL amath583.cpp -o amath583.o
+c++ -c -Xpreprocessor -fopenmp -DTIME_COO -DTIME_CSR -DTIME_CSC -DTIME_AOS -Ofast -march=native -DNDEBUG  -std=c++17 -Wall -I../include  -I/usr/include/python2.7  -DNCRITICAL amath583IO.cpp -o amath583IO.o
+c++ -c -Xpreprocessor -fopenmp -DTIME_COO -DTIME_CSR -DTIME_CSC -DTIME_AOS -Ofast -march=native -DNDEBUG  -std=c++17 -Wall -I../include  -I/usr/include/python2.7  -DNCRITICAL amath583sparse.cpp -o amath583sparse.o
+c++ -Xpreprocessor -fopenmp -DTIME_COO -DTIME_CSR -DTIME_CSC -DTIME_AOS -Ofast -march=native -DNDEBUG  -std=c++17 -Wall -I../include  -I/usr/include/python2.7  -DNCRITICAL csr_scale.o amath583.o amath583IO.o amath583sparse.o -o csr_scale.exe -L/usr/lib/python2.7/config-x86_64-linux-gnu -lpython2.7 -lpthread -lomp  -lpthread
++++ make csr_scale.exe Passed +++
+=== Testing ./csr_scale.exe -i cit-Patents.mmio ===
+================================================================
+  Compressed sparse row matrix by nnz
+N	trips	total	        avg	        Gflops
+1	6	0.272333	0.0453889	0.121314	3774768
+2	6	0.133333	0.0222222	0.247784	3774768
+4	6	0.267667	0.0446111	0.123429	3774768
+8	6	0.299667	0.0499444	0.110249	3774768
+16	6	0.293	        0.0488333	0.112757	3774768
++++ ./csr_scale.exe -i cit-Patents.mmio Passed +++
+=== Testing make clean ===
+/bin/rm -f matvec_scale.exe pagerank.exe csr_scale.exe norm_scale.exe csr_omp.exe deg_dist.exe mmio_to_bin.exe matvec_scale.o pagerank.o csr_scale.o norm_scale.o csr_omp.o deg_dist.o mmio_to_bin.o amath583.o amath583IO.o amath583sparse.o matvec_scale.hpp.gch pagerank.hpp.gch csr_scale.hpp.gch norm_scale.hpp.gch csr_omp.hpp.gch deg_dist.hpp.gch mmio_to_bin.hpp.gch amath583.hpp.gch amath583IO.hpp.gch amath583sparse.hpp.gch Matrix.s a.out *~ Makefile.bak
++++ make clean Passed +++
+=== Testing make pagerank.exe ===
+c++ -c -Xpreprocessor -fopenmp -DTIME_COO -DTIME_CSR -DTIME_CSC -DTIME_AOS -Ofast -march=native -DNDEBUG  -std=c++17 -Wall -I../include  -I/usr/include/python2.7  -DNCRITICAL pagerank.cpp -o pagerank.o
+c++ -c -Xpreprocessor -fopenmp -DTIME_COO -DTIME_CSR -DTIME_CSC -DTIME_AOS -Ofast -march=native -DNDEBUG  -std=c++17 -Wall -I../include  -I/usr/include/python2.7  -DNCRITICAL amath583.cpp -o amath583.o
+c++ -c -Xpreprocessor -fopenmp -DTIME_COO -DTIME_CSR -DTIME_CSC -DTIME_AOS -Ofast -march=native -DNDEBUG  -std=c++17 -Wall -I../include  -I/usr/include/python2.7  -DNCRITICAL amath583IO.cpp -o amath583IO.o
+c++ -c -Xpreprocessor -fopenmp -DTIME_COO -DTIME_CSR -DTIME_CSC -DTIME_AOS -Ofast -march=native -DNDEBUG  -std=c++17 -Wall -I../include  -I/usr/include/python2.7  -DNCRITICAL amath583sparse.cpp -o amath583sparse.o
+c++ -Xpreprocessor -fopenmp -DTIME_COO -DTIME_CSR -DTIME_CSC -DTIME_AOS -Ofast -march=native -DNDEBUG  -std=c++17 -Wall -I../include  -I/usr/include/python2.7  -DNCRITICAL pagerank.o amath583.o amath583IO.o amath583sparse.o -o pagerank.exe -L/usr/lib/python2.7/config-x86_64-linux-gnu -lpython2.7 -lpthread -lomp  -lpthread
++++ make pagerank.exe Passed +++
+=== Testing ./pagerank.exe cit-Patents.mmio ===
+# elapsed time [read]: 3525 ms
+Converged in 8 iterations
+# elapsed time [pagerank]: 802 ms
+# elapsed time [rank]: 348 ms
++++ ./pagerank.exe cit-Patents.mmio Passed +++

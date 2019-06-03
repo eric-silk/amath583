@@ -24,6 +24,7 @@ void randomize(Vector& x);
 
 double one_norm(const Vector& x);
 double two_norm(const Vector& x);
+double two_norm_omp(const Vector& x);
 double inf_norm(const Vector& x);
 double p_norm(const Vector& x);
 
@@ -67,6 +68,7 @@ Matrix& operator-=(const Matrix& x, const Matrix& y);
 // ----------------------------------------------------------------
 Vector operator*(const Matrix& A, const Vector& x);
 void   matvec(const Matrix& A, const Vector& x, Vector& y);
+void   matvec_omp(const Matrix& A, const Vector& x, Vector& y);
 
 // ----------------------------------------------------------------
 //

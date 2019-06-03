@@ -8,8 +8,7 @@
 # Author: Andrew Lumsdaine
 #
 
-SPEEDUP		:=
-#SPEEDUP	:= -DNCRITICAL
+SPEEDUP	:= -DNCRITICAL
 
 CXX             := c++
 
@@ -28,7 +27,7 @@ AOS		+= -DTIME_AOS
 
 # Maximum optimization effort: -O3 -march=native -DNDEBUG
 OPTS            := -Ofast -march=native -DNDEBUG 
-OPTS            := -O0 -g -march=native #-DNDEBUG 
+#OPTS            := -O0 -g -march=native #-DNDEBUG 
 LANG            := -std=c++17
 PICKY           := -Wall
 DIAG		:= # -Rpass=.*

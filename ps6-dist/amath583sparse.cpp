@@ -110,7 +110,7 @@ void   piscetize(CSRMatrix& A, size_t xpoints, size_t ypoints) {
 
 Vector operator*(const CSRMatrix& A, const Vector& x) {
   Vector y(A.num_rows());
-  A.matvec(x, y);
+  A.omp_matvec(x, y);
   return y;
 }
 
