@@ -29,7 +29,12 @@ void randomize(VectorType &x, T scale) {
 template <typename T>
 struct square
 {
-	/* write me */
+  // The __host__ __device__ is required to get rid of a MASSIVE template warning
+  // Per the github documentation
+  __host__ __device__ T operator()(const T& x)
+  {
+    return x * x;
+  }
 };
 
 
@@ -49,6 +54,7 @@ int main(int argc, char* argv[]) {
   thrust::copy(x.begin(), x.end(), X.begin());
 
   float                init = 0.0;
+  float                result = 0.0;
   square<float>        unary_op;
   thrust::plus<float> binary_op;
 
@@ -58,7 +64,8 @@ int main(int argc, char* argv[]) {
   cudaDeviceSynchronize();
   for (size_t i = 0; i < num_trips; ++i) {
     /* write me -- use transform reduce (?) with unary op and binary op defined above */
-
+    result = thrust::transform_reduce(X.begin(), X.end(), unary_op, init, binary_op);
+    result = std::sqrt(result);
     cudaDeviceSynchronize();
   }
 

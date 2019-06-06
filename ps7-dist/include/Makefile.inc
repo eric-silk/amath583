@@ -48,6 +48,7 @@ ifeq ($(OMP),yes)
 		DEFS += -Xpreprocessor
 	endif
 	DEFS += -fopenmp
+        DEFS += -fPIC
 	LIBS += -lomp
 endif
 

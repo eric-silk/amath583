@@ -17,7 +17,7 @@ CIMG    := no
 
 
 # These must be set to some value or make will pick defaults (which will be wrong)
-CXX	:= c++
+CXX	:= clang
 LANG	:= -std=c++11
 
 TARGETS := thrust_norm.exe lambda_norm.exe cuda_norm.exe omp_norm.exe stl_norm.exe sequential_norm.exe

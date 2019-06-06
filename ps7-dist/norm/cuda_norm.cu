@@ -4,7 +4,11 @@
 
 __global__
 void sq(int n, float *x, float *y){
-     /* Write me -- kernel */
+  /* Write me -- kernel */
+  for (size_t i = 0; i < n; ++i)
+  {
+    y[i] = x[i] * x[i];
+  }
 }
 
 
@@ -34,9 +38,17 @@ int main(int argc, char* argv[]) {
   cudaDeviceSynchronize();
   for (size_t i = 0; i < num_trips; ++i) {
     /* write me -- launch sq kernel */
+    sq<<<num_blocks, block_size>>>(N, x, y);
     cudaDeviceSynchronize();
   }
   /* write me: final step, copy out values from y and add on cpu */
+  float result = 0.0;
+  for (size_t i = 0; i < N; ++i)
+  {
+    result += y[i];
+  }
+
+  result = std::sqrt(result);
 
   double cuda_time = STOP_TIMER_QUIETLY(cuda_norm);
   std::cout << exponent << "\t" << num_trips << "\t" << cuda_time << std::endl;
