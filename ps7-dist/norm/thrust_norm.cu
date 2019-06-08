@@ -13,6 +13,15 @@
 #include <numeric>
 #include <random>
 
+// Sequential norm for verification purposes
+// Confirmed working!
+double norm(const thrust::host_vector<float>& v) {
+  double sum = 0.0;
+  for (size_t i = 0; i < v.size(); ++i){
+    sum += v[i] * v[i];
+  }
+  return std::sqrt(sum);
+}
 
 template <typename VectorType, typename T>
 void randomize(VectorType &x, T scale) {
@@ -50,8 +59,8 @@ int main(int argc, char* argv[]) {
   
   thrust::host_vector<float> x(num_elements);
   randomize(x, 10.0f);
-  thrust::device_vector<float> X(num_elements);
-  thrust::copy(x.begin(), x.end(), X.begin());
+  thrust::device_vector<float> device_x(num_elements);
+  thrust::copy(x.begin(), x.end(), device_x.begin());
 
   float                init = 0.0;
   float                result = 0.0;
@@ -64,13 +73,13 @@ int main(int argc, char* argv[]) {
   cudaDeviceSynchronize();
   for (size_t i = 0; i < num_trips; ++i) {
     /* write me -- use transform reduce (?) with unary op and binary op defined above */
-    result = thrust::transform_reduce(X.begin(), X.end(), unary_op, init, binary_op);
-    result = std::sqrt(result);
+    result = thrust::transform_reduce(device_x.begin(), device_x.end(), unary_op, init, binary_op);
     cudaDeviceSynchronize();
+    result = std::sqrt(result);
   }
 
   double cuda_time = STOP_TIMER_QUIETLY(gpu_norm);
-  std::cout << exponent << "\t" << num_trips << "\t" << cuda_time << std::endl;
+  std::cout << exponent << "\t" << num_trips << "\t" << cuda_time << "\t" << result << std::endl;
 
   return 0;
 }

@@ -20,15 +20,16 @@ int main(int argc, char* argv[]) {
   
   std::vector<float> x(num_elements);
   std::fill(x.begin(), x.end(), 1.0);
+  float s_norm = 0.0;
 
   DEF_TIMER(stl_norm);
   START_TIMER(stl_norm);
   for (size_t i = 0; i < num_trips; ++i) {
-    float s_norm = std::sqrt(std::inner_product(x.begin(), x.end(), x.begin(), 0.0));
+    s_norm = std::sqrt(std::inner_product(x.begin(), x.end(), x.begin(), 0.0));
   }
   double stl_time = STOP_TIMER_QUIETLY(stl_norm);
 
-  std::cout << exponent << "\t" << num_trips << "\t" << stl_time << std::endl;
+  std::cout << exponent << "\t" << num_trips << "\t" << stl_time <<  "\t" << s_norm << std::endl;
 
   return 0;
 }

@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
     a = norm(A);
   }
   double omp_time = STOP_TIMER_QUIETLY(omp_norm);
-  std::cout << exponent << "\t" << num_trips << "\t" << omp_time << std::endl;
+  std::cout << exponent << "\t" << num_trips << "\t" << omp_time << "\t" << a << std::endl;
 
   return 0;
 }

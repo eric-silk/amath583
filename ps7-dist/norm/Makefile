@@ -20,7 +20,7 @@ CIMG    := no
 CXX	:= clang
 LANG	:= -std=c++11
 
-TARGETS := thrust_norm.exe lambda_norm.exe cuda_norm.exe omp_norm.exe stl_norm.exe sequential_norm.exe
+TARGETS := thrust_norm.exe lambda_norm.exe cuda_norm.exe cuda_norm_optimized.exe omp_norm.exe stl_norm.exe sequential_norm.exe
 
 .PHONY : all
 

@@ -41,6 +41,7 @@ int main(int argc, char* argv[]) {
   thrust::plus<float> binary_op;
 
   float init = 0.0;
+  float result = 0.0;
 
   DEF_TIMER(gpu_norm_lambda);
   START_TIMER(gpu_norm_lambda);
@@ -49,14 +50,14 @@ int main(int argc, char* argv[]) {
   for (size_t i = 0; i < num_trips; ++i) {
     /* write me -- use thrust::transform_reduct and a lambda for one or both of the unary op and binary op */
     auto unary_op = [](const float x)->float{return x * x;};
-    auto result = thrust::transform_reduce(x.begin(), x.end(), unary_op, init, binary_op);
+    result = thrust::transform_reduce(x.begin(), x.end(), unary_op, init, binary_op);
     result = std::sqrt(result);
 
     cudaDeviceSynchronize();
   }
   double cuda_time = STOP_TIMER_QUIETLY(gpu_norm_lambda);
 
-  std::cout << exponent << "\t" << num_trips << "\t" << cuda_time << std::endl;
+  std::cout << exponent << "\t" << num_trips << "\t" << cuda_time << "\t" << result << std::endl;
 
   return 0;
 }

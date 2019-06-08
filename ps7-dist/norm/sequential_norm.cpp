@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
   }
 
   double sequential_time = STOP_TIMER_QUIETLY(sequential_norm);
-  std::cout << exponent << "\t" << num_trips << "\t" << sequential_time << std::endl;
+  std::cout << exponent << "\t" << num_trips << "\t" << sequential_time << "\t" << a << std::endl;
 
   return 0;
 }
