@@ -91,12 +91,7 @@ int main(int argc, char* argv[]) {
   double cuda_time = STOP_TIMER_QUIETLY(cuda_norm);
   std::cout << exponent << "\t" << num_trips << "\t" << cuda_time << "\t" << result << std::endl;
 
-  for (int i = 0; i < N; i++)
-  {
-    assert(x[i] == sequential_vector[i]);
-  }
-
-  std::cout << "sequential norm: " << norm(sequential_vector) << std::endl;
+  // this WILL fail for exponents above 8 or so. Floating point error is a bitch.
   assert(norm(sequential_vector) == result);
 
   cudaFree(x); cudaFree(y);

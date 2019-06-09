@@ -1,0 +1,18 @@
+./reduction Starting...
+
+GPU Device 0: "Tesla V100-SXM2-16GB" with compute capability 7.0
+
+Using Device 0: Tesla V100-SXM2-16GB
+
+Reducing array of type int
+
+16777216 elements
+256 threads (max)
+65536 blocks
+
+Reduction, Throughput = 123.7099 GB/s, Time = 0.00054 s, Size = 16777216 Elements, NumDevsUsed = 1, Workgroup = 256
+
+GPU result = -24634787
+CPU result = 2139353471
+
+Test failed!

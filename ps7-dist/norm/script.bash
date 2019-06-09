@@ -5,8 +5,8 @@ trips=10
 make clean
 
 
-for program in cuda_norm thrust_norm lambda_norm sequential_norm stl_norm omp_norm ; do
-    make ${program}.exe
+for program in cuda_norm cuda_norm_optimized thrust_norm lambda_norm sequential_norm stl_norm omp_norm ; do
+    make -j9 ${program}.exe
     /bin/rm -f ${program}.txt
     printf "\n"
     printf "=== ${program} ===\n"

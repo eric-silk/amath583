@@ -1,0 +1,20 @@
+======== Warning: Event "branch" cannot be found on device 0.
+======== Warning: Event "divergent_branch" cannot be found on device 0.
+==7022== NVPROF is profiling process 7022, command: ./thrust_norm.exe
+==7022== Some kernel(s) will be replayed on device 0 in order to collect all events/metrics.
+==7022== Error: Internal profiling error 4075:7.
+======== Profiling result:
+======== Metric result:
+Invocations                               Metric Name                        Metric Description         Min         Max         Avg
+Device "Tesla V100-SXM2-16GB (0)"
+    Kernel: void thrust::cuda_cub::core::_kernel_agent<thrust::cuda_cub::__parallel_for::ParallelForAgent<thrust::cuda_cub::__uninitialized_fill::functor<thrust::device_ptr<float>, float>, unsigned long>, thrust::cuda_cub::__uninitialized_fill::functor<thrust::device_ptr<float>, float>, unsigned long>(thrust::device_ptr<float>, float)
+          1                        achieved_occupancy                        Achieved Occupancy    0.757202    0.757202    0.757202
+          1                         branch_efficiency                         Branch Efficiency     100.00%     100.00%     100.00%
+          1                    sysmem_read_throughput             System Memory Read Throughput  0.00000B/s  0.00000B/s  0.00000B/s
+          1                      dram_read_throughput             Device Memory Read Throughput  3.9091MB/s  3.9091MB/s  3.9091MB/s
+          1                  gld_requested_throughput          Requested Global Load Throughput  0.00000B/s  0.00000B/s  0.00000B/s
+          1                            gst_throughput                   Global Store Throughput  831.78GB/s  831.78GB/s  831.78GB/s
+          1                            gst_efficiency            Global Memory Store Efficiency     100.00%     100.00%     100.00%
+          1                             sm_efficiency                   Multiprocessor Activity      99.13%      99.13%      99.13%
+          1                            gld_efficiency             Global Memory Load Efficiency       0.00%       0.00%       0.00%
+======== Error: CUDA profiling error.
