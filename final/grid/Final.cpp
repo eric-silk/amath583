@@ -34,7 +34,7 @@ double mpiDot(const Grid& X, const Grid& Y) {
   
   /* Complete me */
   // MPI::COMM_WORLD.Allreduce(/*sendbuf*/,/*recvbuf*/,/*count*/,/*type*/, MPI::SUM);
-  MPI::COMM_WORLD.Allreduce(&signam, &dot, 1, MPI::DOUBLE, MPI::SUM);
+  MPI::COMM_WORLD.Allreduce(&sigma, &sum, 1, MPI::DOUBLE, MPI::SUM);
 
   // This should have the total inner product -- on all nodes
   return sum;

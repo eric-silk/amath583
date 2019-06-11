@@ -33,7 +33,7 @@ void update_halo(Grid& x) {
   // TODO: Verify row vs. column major order
   // Currently assuming "above" is myrank-1, TODO verify this
 
-  if (my_rank == 0){
+  if (myrank == 0){
     // Top of the group
     // Need to send/receive the bottom only
     below       = (double*) malloc(edge_size * sizeof(double));
@@ -49,12 +49,14 @@ void update_halo(Grid& x) {
                              below,       edge_size, MPI::DOUBLE, myrank+1, 0);
     // Now push the halo values in
     for (size_t i = 0; i < edge_size; ++i){
-      x(i, 0) = above[i];
       x(i, x.num_y()) = below[i];
     }
+
+    free(below);
+    free(bottom_edge);
   }
 
-  else if (my_rank == mysize-1){
+  else if (myrank == mysize-1){
     // Bottom of the group
     // Need to send/receive the top only
     above       = (double*) malloc(edge_size * sizeof(double));
@@ -72,7 +74,8 @@ void update_halo(Grid& x) {
     for (size_t i = 0; i < edge_size; ++i){
       x(i, 0) = above[i];
     }
-
+    free(top_edge);
+    free(above);
   }
 
   else{
@@ -99,6 +102,10 @@ void update_halo(Grid& x) {
       x(i, 0) = above[i];
       x(i, x.num_y()) = below[i];
     }
+    free(top_edge);
+    free(above);
+    free(bottom_edge);
+    free(below);
   }
 }
 
