@@ -80,13 +80,13 @@ size_t jacobi(const mpiStencil& A, Grid& x, const Grid& b, size_t maxiter, doubl
 
 /* Parallelize me */
 size_t ir(const mpiStencil& A, Grid& x, const Grid& b, size_t max_iter, double tol) {
- for (size_t iter = 0; iter < max_iter; ++iter) {
+  for (size_t iter = 0; iter < max_iter; ++iter) {
     Grid r = b - A*x;
 
     double sigma = mpiDot(r, r);
     //double sigma = dot(r, r);
 
-    std::cout << "iter: " << iter << ", ||r|| = " << std::sqrt(sigma) << std::endl;
+    std::cout << "||r|| = " << std::sqrt(sigma) << std::endl;
     if (std::sqrt(sigma) < tol){
       std::cout << "IR parallel method converged with iter=" << iter << "." << std::endl;
       return iter;
