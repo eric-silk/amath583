@@ -60,11 +60,11 @@ size_t jacobi(const mpiStencil& A, Grid& x, const Grid& b, size_t maxiter, doubl
 
     double sigma = rho;
     MPI::COMM_WORLD.Allreduce(&sigma, &rho, 1, MPI::DOUBLE, MPI::SUM);
-
     
     if (MPI::COMM_WORLD.Get_rank() == 0)  {
       std::cout << "||r|| = " << std::sqrt(rho) << std::endl;
     }
+
     if (std::sqrt(rho) < tol) return 0;
 
     swap(x, y);
