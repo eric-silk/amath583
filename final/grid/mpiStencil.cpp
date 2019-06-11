@@ -17,6 +17,20 @@
 void update_halo(Grid& x) {
 
   /* Write me */
+  // We need an array to receive into on both the top and bottom (but not sides, per Dr. Lumsdaine)
+  double *above = nullptr, *below = nullptr;
+  // Similarly, we need arrays of the top and bottom edges of the current grid to send
+  double *top_edge = nullptr, *bottom_edge = nullptr;
+
+  size_t const edge_size = x.num_x() -2;
+
+  above       = (double*) malloc(edge_size * sizeof(double));
+  below       = (double*) malloc(edge_size * sizeof(double));
+
+  top_edge    = (double*) malloc(edge_size * sizeof(double));
+  bottom_edge = (double*) malloc(edge_size * sizeof(double));
+
+  MPI::COMM_WORLD.Sendrecv(top_edge, 
 
 }
 

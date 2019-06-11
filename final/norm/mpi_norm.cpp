@@ -28,6 +28,15 @@ double mpi_norm(const Vector& local_x) {
 
   // Write me -- fill in the arguments to allreduce -- and then uncomment it.
   // MPI::COMM_WORLD.Allreduce(/* write me */);
+  // MPI::COMM_WORLD.Allreduce(void* send_data,
+  //                           void* recv_data,
+  //                           int count,
+  //                           MPI_Datatype Datatype,
+  //                           MPI_Op op,
+  //                           MPI_Comm communicator)
+
+  MPI::COMM_WORLD.Allreduce(&local_rho, &global_rho, 1,
+                            MPI::DOUBLE, MPI::SUM);
 
   return std::sqrt(global_rho);
 }
