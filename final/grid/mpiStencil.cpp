@@ -42,7 +42,7 @@ void update_halo(Grid& x) {
     // When iterating, include the corners as well
     // Get the top edges to send
     for (size_t i = 0; i < edge_size; ++i){
-      bottom_edge[i] = x(i, x.num_y());
+      bottom_edge[i] = x(i, x.num_y()-1);
     }
 
     MPI::COMM_WORLD.Sendrecv(bottom_edge, edge_size, MPI::DOUBLE, myrank+1, 0,
@@ -90,7 +90,7 @@ void update_halo(Grid& x) {
     // Get the top edges to send
     for (size_t i = 0; i < edge_size; ++i){
       top_edge[i] = x(i, 1);
-      bottom_edge[i] = x(i, x.num_y());
+      bottom_edge[i] = x(i, x.num_y()-1);
     }
 
     MPI::COMM_WORLD.Sendrecv(top_edge,    edge_size, MPI::DOUBLE, myrank-1, 0,

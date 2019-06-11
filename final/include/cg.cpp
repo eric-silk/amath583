@@ -40,7 +40,11 @@ size_t cg(const Stencil& A, Grid& x, const Grid& b, size_t max_iter, double tol)
     r -= alpha * q;
     rho = dot(r, r);
 
-    if (rho < tol) return iter;
+    if (rho < tol){
+      std::cout << "Sequential CG converged at iter=" << iter << "." << std::endl;
+      return iter;
+    }
   }
+  std::cout << "Sequential CG failed to converge." << std::endl;
   return max_iter;
 }

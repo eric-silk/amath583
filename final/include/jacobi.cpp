@@ -32,10 +32,14 @@ size_t jacobi(const Stencil& A, Grid& x, const Grid& b, size_t maxiter, double t
       }
     }
     std::cout << "||r|| = " << std::sqrt(rho) << std::endl;
-    if (std::sqrt(rho) < tol) return iter;
+    if (std::sqrt(rho) < tol){
+      std::cout << "Sequential jacobi converged at iter=" << iter << "." << std::endl;
+      return iter;
+    }
     swap(x, y);
   }
     
+  std::cout << "Sequential jacobi failed to converge." << std::endl;
   return maxiter;
 }
 

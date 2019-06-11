@@ -30,7 +30,8 @@ include ../include/Makefile.inc
 
 all    : $(TARGETS)
 
-OTHERCLEAN   := $(TARGETS:.exe=.txt) Grid.o Stencil.o cg.o ir.o jacobi.o Final.o mpiStencil.o 
+OTHERCLEAN   := $(TARGETS:.exe=.txt) Grid.o Stencil.o cg.o ir.o jacobi.o Final.o mpiStencil.o \
+  		*.out*
 OTHERSOURCES := ../include/Grid.cpp ../include/Stencil.cpp  ../include/cg.cpp  \
 	        ../include/ir.cpp   ../include/jacobi.cpp   Final.cpp mpiStencil.cpp
 

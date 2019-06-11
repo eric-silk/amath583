@@ -29,10 +29,9 @@ double mpiDot(const Grid& X, const Grid& Y) {
       sum += X(i, j) * Y(i, j);
     }
   }
-  double sigma = sum;
   // sigma now has the local portion of the inner product
+  double const sigma = sum;
   
-  /* Complete me */
   // MPI::COMM_WORLD.Allreduce(/*sendbuf*/,/*recvbuf*/,/*count*/,/*type*/, MPI::SUM);
   MPI::COMM_WORLD.Allreduce(&sigma, &sum, 1, MPI::DOUBLE, MPI::SUM);
 
@@ -65,29 +64,39 @@ size_t jacobi(const mpiStencil& A, Grid& x, const Grid& b, size_t maxiter, doubl
       std::cout << "||r|| = " << std::sqrt(rho) << std::endl;
     }
 
-    if (std::sqrt(rho) < tol) return 0;
+    if (std::sqrt(rho) < tol){
+      std::cout << "Jacobi parallel method converged with iter=" << iter << "." << std::endl;
+      return 0;
+    }
 
     swap(x, y);
     update_halo(const_cast<Grid&>(x));
   }
     
+  std::cout << "Jacobi parallel method failed to converge." << std::endl;
   return maxiter;
 }
 
 
 /* Parallelize me */
 size_t ir(const mpiStencil& A, Grid& x, const Grid& b, size_t max_iter, double tol) {
-  for (size_t iter = 0; iter < max_iter; ++iter) {
+ for (size_t iter = 0; iter < max_iter; ++iter) {
     Grid r = b - A*x;
 
-    double sigma = dot(r, r);
+    double sigma = mpiDot(r, r);
+    //double sigma = dot(r, r);
 
-    std::cout << "||r|| = " << std::sqrt(sigma) << std::endl;
-    if (std::sqrt(sigma) < tol) return iter;
+    std::cout << "iter: " << iter << ", ||r|| = " << std::sqrt(sigma) << std::endl;
+    if (std::sqrt(sigma) < tol){
+      std::cout << "IR parallel method converged with iter=" << iter << "." << std::endl;
+      return iter;
+    }
 
     x += r;
   
   }
+
+  std::cout << "IR parallel method failed to converge." << std::endl;
   return max_iter;
 }
 
@@ -95,16 +104,17 @@ size_t ir(const mpiStencil& A, Grid& x, const Grid& b, size_t max_iter, double t
 size_t cg(const mpiStencil& A, Grid& x, const Grid& b, size_t max_iter, double tol) {
 
   Grid r = b - A*x, p(b);
-  double rho = dot(r, r), rho_1 = 0.0;
+  double rho = mpiDot(r, r), rho_1 = 0.0;
 
   for (size_t iter = 0; iter < max_iter; ++iter) {
     std::cout << iter << ": ||r|| = " << std::sqrt(rho) << std::endl;
 
     if (iter == 0) {
       p = r;
-    } else {
+    }
+    else {
       double beta = (rho / rho_1);
-      p = r +  beta * p;
+      p = r + beta * p;
     }
     
     Grid q = A*p;
@@ -117,7 +127,11 @@ size_t cg(const mpiStencil& A, Grid& x, const Grid& b, size_t max_iter, double t
     r -= alpha * q;
     rho = dot(r,r);
 
-    if (rho < tol) return iter;
+    if (rho < tol){
+      std::cout << "CG parallel method converged with iter=" << iter << "." << std::endl;
+      return iter;
+    }
   }
+  std::cout << "CG parallel method failed to converge." << std::endl;
   return max_iter;
 }
