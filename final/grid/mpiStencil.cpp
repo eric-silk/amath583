@@ -15,97 +15,92 @@
 
 
 void update_halo(Grid& x) {
-  // Written assuming the halo is included already!
 
-  // We need an array to receive into on both the top and bottom (but not sides, per Dr. Lumsdaine)
-  double *above = nullptr, *below = nullptr;
-  // Similarly, we need arrays of the top and bottom edges of the current grid to send
-  double *top_edge = nullptr, *bottom_edge = nullptr;
+  // We need an array to receive into on both the left and right
+  double *left = nullptr, *right = nullptr;
+  // Similarly, we need arrays of the left and right edges of the current grid to send
+  double *left_edge = nullptr, *right_edge = nullptr;
 
-  size_t const edge_size = x.num_x();
-
+  size_t const edge_size = x.num_y();
 
   // Populate the local edge arrays
-  // If the top or bottom partition, don't populate both!
+  // If the left or right partition, don't populate both!
   size_t myrank = MPI::COMM_WORLD.Get_rank();
   size_t mysize = MPI::COMM_WORLD.Get_size();
 
-  // TODO: Verify row vs. column major order
-  // Currently assuming "above" is myrank-1, TODO verify this
-
   if (myrank == 0){
-    // Top of the group
-    // Need to send/receive the bottom only
-    below       = (double*) malloc(edge_size * sizeof(double));
-    bottom_edge = (double*) malloc(edge_size * sizeof(double));
+    // Leftmost of the group
+    // Need to send/receive the right only
+    right      = (double*) malloc(edge_size * sizeof(double));
+    right_edge = (double*) malloc(edge_size * sizeof(double));
 
     // When iterating, include the corners as well
-    // Get the top edges to send
+    // Get the left edges to send
     for (size_t i = 0; i < edge_size; ++i){
-      bottom_edge[i] = x(i, x.num_y()-1);
+      right_edge[i] = x(x.num_x()-1, i);
     }
 
-    MPI::COMM_WORLD.Sendrecv(bottom_edge, edge_size, MPI::DOUBLE, myrank+1, 0,
-                             below,       edge_size, MPI::DOUBLE, myrank+1, 0);
+    MPI::COMM_WORLD.Sendrecv(right_edge, edge_size, MPI::DOUBLE, myrank+1, 0,
+                             right,      edge_size, MPI::DOUBLE, myrank+1, 0);
     // Now push the halo values in
     for (size_t i = 0; i < edge_size; ++i){
-      x(i, x.num_y()) = below[i];
+      x(x.num_x(), i) = right[i];
     }
 
-    free(below);
-    free(bottom_edge);
+    free(right);
+    free(right_edge);
   }
 
   else if (myrank == mysize-1){
-    // Bottom of the group
-    // Need to send/receive the top only
-    above       = (double*) malloc(edge_size * sizeof(double));
-    top_edge    = (double*) malloc(edge_size * sizeof(double));
+    // Rightmost of the group
+    // Need to send/receive the left only
+    left      = (double*) malloc(edge_size * sizeof(double));
+    left_edge = (double*) malloc(edge_size * sizeof(double));
 
     // When iterating, include the corners as well
-    // Get the top edges to send
+    // Get the left edges to send
     for (size_t i = 0; i < edge_size; ++i){
-      top_edge[i] = x(i, 1);
+      left_edge[i] = x(1, i);
     }
 
-    MPI::COMM_WORLD.Sendrecv(top_edge,    edge_size, MPI::DOUBLE, myrank-1, 0,
-                             above,       edge_size, MPI::DOUBLE, myrank-1, 0);
+    MPI::COMM_WORLD.Sendrecv(left_edge, edge_size, MPI::DOUBLE, myrank-1, 0,
+                             left,      edge_size, MPI::DOUBLE, myrank-1, 0);
     // Now push the halo values in
     for (size_t i = 0; i < edge_size; ++i){
-      x(i, 0) = above[i];
+      x(0, i) = left[i];
     }
-    free(top_edge);
-    free(above);
+    free(left_edge);
+    free(left);
   }
 
   else{
     // Non-edge partition
-    // Both top and bottom required
-    above       = (double*) malloc(edge_size * sizeof(double));
-    below       = (double*) malloc(edge_size * sizeof(double));
-    top_edge    = (double*) malloc(edge_size * sizeof(double));
-    bottom_edge = (double*) malloc(edge_size * sizeof(double));
+    // Both left and right required
+    left       = (double*) malloc(edge_size * sizeof(double));
+    right      = (double*) malloc(edge_size * sizeof(double));
+    left_edge  = (double*) malloc(edge_size * sizeof(double));
+    right_edge = (double*) malloc(edge_size * sizeof(double));
 
     // When iterating, include the corners as well
-    // Get the top edges to send
+    // Get the left edges to send
     for (size_t i = 0; i < edge_size; ++i){
-      top_edge[i] = x(i, 1);
-      bottom_edge[i] = x(i, x.num_y()-1);
+      left_edge[i] = x(1, i);
+      right_edge[i] = x(x.num_x()-1, i);
     }
 
-    MPI::COMM_WORLD.Sendrecv(top_edge,    edge_size, MPI::DOUBLE, myrank-1, 0,
-                             above,       edge_size, MPI::DOUBLE, myrank-1, 0);
-    MPI::COMM_WORLD.Sendrecv(bottom_edge, edge_size, MPI::DOUBLE, myrank+1, 0,
-                             below,       edge_size, MPI::DOUBLE, myrank+1, 0);
+    MPI::COMM_WORLD.Sendrecv(left_edge,  edge_size, MPI::DOUBLE, myrank-1, 0,
+                             left,       edge_size, MPI::DOUBLE, myrank-1, 0);
+    MPI::COMM_WORLD.Sendrecv(right_edge, edge_size, MPI::DOUBLE, myrank+1, 0,
+                             right,      edge_size, MPI::DOUBLE, myrank+1, 0);
     // Now push the halo values in
     for (size_t i = 0; i < edge_size; ++i){
-      x(i, 0) = above[i];
-      x(i, x.num_y()) = below[i];
+      x(0, i) = left[i];
+      x(x.num_x(), i) = right[i];
     }
-    free(top_edge);
-    free(above);
-    free(bottom_edge);
-    free(below);
+    free(left_edge);
+    free(left);
+    free(right_edge);
+    free(right);
   }
 }
 

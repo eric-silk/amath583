@@ -65,7 +65,10 @@ size_t jacobi(const mpiStencil& A, Grid& x, const Grid& b, size_t maxiter, doubl
     }
 
     if (std::sqrt(rho) < tol){
-      std::cout << "Jacobi parallel method converged with iter=" << iter << "." << std::endl;
+      if (MPI::COMM_WORLD.Get_rank() == 0)  {
+        std::cout << "Jacobi parallel method converged with iter=" << iter << "." << std::endl;
+      }
+
       return 0;
     }
 
@@ -80,11 +83,11 @@ size_t jacobi(const mpiStencil& A, Grid& x, const Grid& b, size_t maxiter, doubl
 
 /* Parallelize me */
 size_t ir(const mpiStencil& A, Grid& x, const Grid& b, size_t max_iter, double tol) {
-  for (size_t iter = 0; iter < max_iter; ++iter) {
+ for (size_t iter = 0; iter < max_iter; ++iter) {
     Grid r = b - A*x;
 
-    //double sigma = mpiDot(r, r);
-    double sigma = dot(r, r);
+    double sigma = mpiDot(r, r);
+    //double sigma = dot(r, r);
 
     if (MPI::COMM_WORLD.Get_rank() == 0) {
       std::cout << "iter: " << iter << ", ||r|| = " << std::sqrt(sigma) << std::endl;
@@ -125,13 +128,13 @@ size_t cg(const mpiStencil& A, Grid& x, const Grid& b, size_t max_iter, double t
     
     Grid q = A*p;
 
-    double alpha = rho / dot(p, q);
+    double alpha = rho / mpiDot(p, q);
     
     x += alpha * p;
     
     rho_1 = rho;
     r -= alpha * q;
-    rho = dot(r,r);
+    rho = mpiDot(r,r);
 
     if (rho < tol){
       std::cout << "CG parallel method converged with iter=" << iter << "." << std::endl;

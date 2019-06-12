@@ -124,6 +124,9 @@ int main(int argc, char* argv[]) {
     Grid X0(lsize, ysize), X1(lsize, ysize);
 
     if (0 == myrank) {
+      std::cout << "xsize: " << xsize << std::endl;
+      std::cout << "ysize: " << ysize << std::endl;
+      std::cout << "lsize: " << lsize << std::endl;
       for (size_t i = 0; i < ysize+2; ++i) {
 	X1(0, i) = X0(0, i) = ((double) i) / ((double) ysize+1);
       }
@@ -143,12 +146,15 @@ int main(int argc, char* argv[]) {
     switch(mtd) {
     case with_jacobi:
       jacobi(A, X1, X0, maxiter, tolerance);
+      std::cout << "Rank " <<myrank << " exited Jacobi." << std::endl;
       break;
     case with_ir:
       ir(A, X1, X0, maxiter, tolerance);
+      std::cout << "Rank " <<myrank << " exited IR." << std::endl;
       break;
     case with_cg:
       cg(A, X1, X0, maxiter, tolerance);
+      std::cout << "Rank " <<myrank << " exited CG." << std::endl;
       break;
     default:
       std::cerr << "This should never happen" << std::endl;
@@ -162,6 +168,5 @@ int main(int argc, char* argv[]) {
     }
     MPI::Finalize();
   }
-
   return 0;
 }
