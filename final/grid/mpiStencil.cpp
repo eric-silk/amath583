@@ -34,6 +34,11 @@ void update_halo(Grid& x) {
     right      = (double*) malloc(edge_size * sizeof(double));
     right_edge = (double*) malloc(edge_size * sizeof(double));
 
+    if (nullptr == right || nullptr == right_edge){
+      std::cout << "0 Failed to alloc memory!" << std::endl;
+    }
+      
+
     // When iterating, include the corners as well
     // Get the left edges to send
     for (size_t i = 0; i < edge_size; ++i){
@@ -56,6 +61,10 @@ void update_halo(Grid& x) {
     // Need to send/receive the left only
     left      = (double*) malloc(edge_size * sizeof(double));
     left_edge = (double*) malloc(edge_size * sizeof(double));
+
+    if (nullptr == left || nullptr == left_edge){
+      std::cout << myrank << " Failed to alloc memory!" << std::endl;
+    }
 
     // When iterating, include the corners as well
     // Get the left edges to send
@@ -80,6 +89,9 @@ void update_halo(Grid& x) {
     right      = (double*) malloc(edge_size * sizeof(double));
     left_edge  = (double*) malloc(edge_size * sizeof(double));
     right_edge = (double*) malloc(edge_size * sizeof(double));
+    if (nullptr == left || nullptr == left_edge || nullptr == right || nullptr == right_edge){
+      std::cout << myrank << " Failed to alloc memory!" << std::endl;
+    }
 
     // When iterating, include the corners as well
     // Get the left edges to send

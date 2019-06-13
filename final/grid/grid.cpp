@@ -110,6 +110,7 @@ int main(int argc, char* argv[]) {
     }
     STOP_TIMER(seqgrid);
   } else {
+
     MPI::Init();
     size_t myrank = MPI::COMM_WORLD.Get_rank();
     size_t mysize = MPI::COMM_WORLD.Get_size();
@@ -163,9 +164,14 @@ int main(int argc, char* argv[]) {
     }
     if (myrank == 0) {
       STOP_TIMER(mpigrid);
+      std::cout << "Stopping timer on 0." << std::endl;
     } else {
+      // I tried to get rid of the return but it seems SOMEONE is using macros that
+      // prevent that...
       double foo = STOP_TIMER_QUIETLY(mpigrid);
+      std::cout << "Stopping timer on " << myrank << "."  << std::endl;
     }
+    std::cout << "Finalizing on " << myrank << "." << std::endl;
     MPI::Finalize();
   }
   return 0;
