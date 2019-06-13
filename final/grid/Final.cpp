@@ -125,13 +125,13 @@ size_t cg(const mpiStencil& A, Grid& x, const Grid& b, size_t max_iter, double t
     
     Grid q = A*p;
 
-    double alpha = rho / dot(p, q);
+    double alpha = rho / mpiDot(p, q);
     
     x += alpha * p;
     
     rho_1 = rho;
     r -= alpha * q;
-    rho = dot(r,r);
+    rho = mpiDot(r,r);
 
     if (rho < tol){
       std::cout << "CG parallel method converged with iter=" << iter << "." << std::endl;
