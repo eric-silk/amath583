@@ -62,13 +62,10 @@ int main(int argc, char* argv[]) {
     std::cout << "ysize " << ysize << std::endl;        
     switch (mtd) {
     case with_jacobi:
-      std::cout << "With jacobi" << std::endl;      
       break;
     case with_ir:
-      std::cout << "With ir" << std::endl;      
       break;
     case with_cg:
-      std::cout << "With cg" << std::endl;      
       break;
     default:
       std::cerr << "This should never happen" << std::endl;
@@ -125,9 +122,6 @@ int main(int argc, char* argv[]) {
     Grid X0(lsize, ysize), X1(lsize, ysize);
 
     if (0 == myrank) {
-      std::cout << "xsize: " << xsize << std::endl;
-      std::cout << "ysize: " << ysize << std::endl;
-      std::cout << "lsize: " << lsize << std::endl;
       for (size_t i = 0; i < ysize+2; ++i) {
 	X1(0, i) = X0(0, i) = ((double) i) / ((double) ysize+1);
       }
@@ -147,15 +141,12 @@ int main(int argc, char* argv[]) {
     switch(mtd) {
     case with_jacobi:
       jacobi(A, X1, X0, maxiter, tolerance);
-      std::cout << "Rank " <<myrank << " exited Jacobi." << std::endl;
       break;
     case with_ir:
       ir(A, X1, X0, maxiter, tolerance);
-      std::cout << "Rank " <<myrank << " exited IR." << std::endl;
       break;
     case with_cg:
       cg(A, X1, X0, maxiter, tolerance);
-      std::cout << "Rank " <<myrank << " exited CG." << std::endl;
       break;
     default:
       std::cerr << "This should never happen" << std::endl;
@@ -164,14 +155,11 @@ int main(int argc, char* argv[]) {
     }
     if (myrank == 0) {
       STOP_TIMER(mpigrid);
-      std::cout << "Stopping timer on 0." << std::endl;
     } else {
       // I tried to get rid of the return but it seems SOMEONE is using macros that
       // prevent that...
       double foo = STOP_TIMER_QUIETLY(mpigrid);
-      std::cout << "Stopping timer on " << myrank << "."  << std::endl;
     }
-    std::cout << "Finalizing on " << myrank << "." << std::endl;
     MPI::Finalize();
   }
   return 0;

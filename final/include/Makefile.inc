@@ -35,7 +35,7 @@ ifeq ($(MODE),debug)
 	CUOPTS  := -g
 else
         #OPTS	:= -Ofast -march=native -DNDEBUG 
-	OPTS	:= -Ofast -DNDEBUG 
+        OPTS	:= -O3 -DNDEBUG
 	CUOPTS  := -O3 -DNDEBUG
 endif
 
