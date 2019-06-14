@@ -1,0 +1,6 @@
+I relied mostly on the Canvas postings, the official MPI V2 documentation, lecture slides, and a
+few random stack overflow threads that were accessed in a stupor late at night.
+
+Most stages of my work can be viewed at: https://github.com/eric-silk/amath583
+I'll be making this a private repo in about a week so it can't be viewed by future students. I just
+wanted a way to track my work and to more easily share code with the TA's and Prof.
