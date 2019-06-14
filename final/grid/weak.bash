@@ -2,7 +2,8 @@
 
 echo "Weak scaling tests"
 make clean
-make grid.exe
+# ALL THE COMPILATION THREADS
+make -j10 grid.exe
 
 for size in 128 256 512
 do

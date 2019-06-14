@@ -2,7 +2,7 @@
 
 echo "Strong scaling tests"
 make clean
-make -j9 grid.exe
+make -j10 grid.exe
 
 for size in 1024 2048 4096 
 do
