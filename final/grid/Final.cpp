@@ -84,7 +84,6 @@ size_t ir(const mpiStencil& A, Grid& x, const Grid& b, size_t max_iter, double t
     Grid r = b - A*x;
 
     double sigma = mpiDot(r, r);
-    //double sigma = dot(r, r);
 
     if (MPI::COMM_WORLD.Get_rank() == 0) {
       // ntd
