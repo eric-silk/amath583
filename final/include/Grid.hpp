@@ -22,8 +22,14 @@ public:
   explicit Grid(size_t x, size_t y) : x_points_(x + 2), y_points_(y + 2), storage_(x_points_ * y_points_) {}
   explicit Grid(size_t x, size_t y, double init) : x_points_(x + 2), y_points_(y + 2), storage_(x_points_ * y_points_, init) {}
 
-  double&       operator()(size_t i, size_t j) { return storage_[i * y_points_ + j]; }
-  const double& operator()(size_t i, size_t j) const { return storage_[i * y_points_ + j]; }
+  double&       operator()(size_t i, size_t j) {
+    assert((i * y_points_ + j) < storage_.size()); 
+    return storage_[i * y_points_ + j];
+  }
+  const double& operator()(size_t i, size_t j) const {
+    assert((i * y_points_ + j) < storage_.size()); 
+    return storage_[i * y_points_ + j];
+  }
 
   size_t num_x() const { return x_points_; }
   size_t num_y() const { return y_points_; }

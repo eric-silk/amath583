@@ -87,9 +87,11 @@ size_t ir(const mpiStencil& A, Grid& x, const Grid& b, size_t max_iter, double t
     double sigma = dot(r, r);
 
     if (MPI::COMM_WORLD.Get_rank() == 0) {
-      std::cout << "iter: " << iter << ", ||r|| = " << std::sqrt(sigma) << std::endl;
+      // ntd
+    std::cout << " iter: " << iter << ", ||r|| = " << std::sqrt(sigma) << std::endl;
     }
     if (std::sqrt(sigma) < tol){
+      std::cout << "IR parallel method converged with iter=" << iter << "." << std::endl;
       if (MPI::COMM_WORLD.Get_rank() == 0){
         std::cout << "IR parallel method converged with iter=" << iter << "." << std::endl;
       }
